@@ -1,6 +1,6 @@
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:379606062.
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:1451730466.
-// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, unused_field, use_build_context_synchronously, prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_const_constructors_in_immutables, sort_child_properties_last, unused_import, avoid_print, unused_element, unnecessary_const
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, unused_field, use_build_context_synchronously, prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_const_constructors_in_immutables, sort_child_properties_last, unused_import, avoid_print, unused_element
 
 import 'package:flutter/services.dart';
 import 'package:myapp/homepage.dart';
@@ -29,7 +29,7 @@ class _UserTypeSelectionState extends State<UserTypeSelection>
       description: 'Browse and purchase products',
       backgroundColor: const Color(0xFF6FA3EF),
       iconColor: Colors.white,
-      destination: RegistrationForm(),
+      destination:  AttractiveRegistrationForm(),
       fontFamily: 'poppins',
       iconSize: 24,
     ),
@@ -37,19 +37,19 @@ class _UserTypeSelectionState extends State<UserTypeSelection>
       title: 'Vendor',
       icon: Icons.storefront,
       description: 'Sell products and manage',
-      backgroundColor: const Color.fromARGB(255, 58, 182, 87),
+      backgroundColor: const Color.fromRGBO(55, 224, 95, 1),
       iconColor: Colors.white,
-      destination: VendorRegistrationForm(),
+      destination:  VendorRegistrationForm(),
       fontFamily: 'poppins',
       iconSize: 24,
     ),
     UserTypeItem(
-      title: 'Franchis',
+      title: 'Franchise',
       icon: Icons.business_center,
       description: 'Manage and expand network',
-      backgroundColor: const Color.fromARGB(255, 207, 157, 40),
+      backgroundColor: const Color.fromARGB(255, 250, 195, 65),
       iconColor: Colors.white,
-      destination: FranchiseeRegistrationForm(),
+      destination:  FranchiseeRegistrationForm(),
       fontFamily: 'poppins',
       iconSize: 24,
     ),
@@ -173,6 +173,7 @@ class _UserTypeSelectionState extends State<UserTypeSelection>
                     style: TextStyle(
                       fontFamily: 'poppins',
                       fontSize: 14,
+                      fontWeight: FontWeight.w600,
                       color: Colors.white.withOpacity(0.8),
                     ),
                   ),
@@ -189,33 +190,87 @@ class _UserTypeSelectionState extends State<UserTypeSelection>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 80),
-              Text(
-                'Choose Your Role',
-                style: TextStyle(
-                  fontFamily: 'poppins',
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: const Color.fromARGB(255, 0, 0, 0),
+      body: Stack(
+        children: [
+          // Main Background Design
+          Positioned.fill(
+            child: Container(
+              color: Color(0xFF1A1A2E), // Dark primary background
+            ),
+          ),
+
+          // First circular container
+          Positioned(
+            top: -80,
+            left: -80,
+            child: Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 97, 145, 217),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+
+          // Second circular container
+          Positioned(
+            bottom: -100,
+            right: -100,
+            child: Container(
+              width: 300,
+              height: 300,
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 55, 224, 199).withOpacity(0.8),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+
+          // Decorative rectangle
+          Positioned(
+            top: 150,
+            left: -50,
+            child: Transform.rotate(
+              angle: -0.5,
+              child: Container(
+                width: 150,
+                height: 400,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 59, 78, 132),
+                  borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              const SizedBox(height: 20),
-              Text(
-                'Select one to proceed further',
-                style: TextStyle(
-                  fontFamily: 'poppins',
-                  fontSize: 16,
-                  color: const Color.fromARGB(255, 0, 0, 0),
+            ),
+          ),
+
+          // Main Content
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 120),
+
+                Text(
+                  'Choose Your Role',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 30),
-              Expanded(
+                SizedBox(height: 18),
+                Text(
+                  'Select one to proceed further',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white70,
+                  ),
+                ),
+                SizedBox(height: 18),
+
+                Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   physics: const BouncingScrollPhysics(),
@@ -225,10 +280,14 @@ class _UserTypeSelectionState extends State<UserTypeSelection>
                   },
                 ),
               ),
-            ],
+              ],
+            ),
           ),
-        ),
+        ],
       ),
+            
+              
+           
     );
   }
 }
@@ -264,7 +323,7 @@ class CustomTextField extends StatelessWidget {
   final String Function(String?) validator;
   final int? maxLines;
 
-  CustomTextField({
+  const CustomTextField({
     required this.controller,
     required this.label,
     required this.icon,
@@ -272,6 +331,7 @@ class CustomTextField extends StatelessWidget {
     this.inputFormatter,
     required this.validator,
     this.maxLines = 1,
+    super.key,
   });
 
   @override
@@ -281,7 +341,7 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon),
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
       keyboardType: keyboardType,
       inputFormatters: inputFormatter != null ? [inputFormatter!] : [],
@@ -291,491 +351,403 @@ class CustomTextField extends StatelessWidget {
   }
 }
 
-
-class RegistrationForm extends StatefulWidget {
-  const RegistrationForm({Key? key}) : super(key: key);
-
+class AttractiveRegistrationForm extends StatefulWidget {
   @override
-  _RegistrationFormState createState() => _RegistrationFormState();
+  _AttractiveRegistrationFormState createState() =>
+      _AttractiveRegistrationFormState();
 }
 
-class _RegistrationFormState extends State<RegistrationForm> with SingleTickerProviderStateMixin {
-  // Form Key
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  
+class _AttractiveRegistrationFormState extends State<AttractiveRegistrationForm>
+    with SingleTickerProviderStateMixin {
   // Tab Controller
   late TabController _tabController;
 
-  // Text Controllers
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _cityController = TextEditingController();
-  final TextEditingController _stateController = TextEditingController();
+  // Form Key
+  final _formKey = GlobalKey<FormState>();
 
-  // Focus Nodes
-  final FocusNode _nameFocusNode = FocusNode();
-  final FocusNode _emailFocusNode = FocusNode();
-  final FocusNode _phoneFocusNode = FocusNode();
+  // Tab Configuration
+  final List<Map<String, dynamic>> _tabs = [
+    {
+      'icon': Icons.person,
+      'label': 'Personal',
+      'fields': [
+        {
+          'controller': TextEditingController(),
+          'label': 'Full Name',
+          'icon': Icons.person,
+          'validator': (value) => value == null || value.isEmpty
+              ? 'Please enter your full name'
+              : null,
+        },
+        {
+          'controller': TextEditingController(),
+          'label': 'Email Address',
+          'icon': Icons.email,
+          'validator': (value) => value == null || value.isEmpty
+              ? 'Please enter email address'
+              : null,
+        },
+        {
+          'controller': TextEditingController(),
+          'label': 'Phone Number',
+          'icon': Icons.phone,
+          'validator': (value) => value == null || value.isEmpty
+              ? 'Please enter phone number'
+              : null,
+        },
+      ]
+    },
+    {
+      'icon': Icons.contact_mail,
+      'label': 'Contact',
+      'fields': [
+        {
+          'controller': TextEditingController(),
+          'label': 'Full Address',
+          'icon': Icons.location_on,
+          'validator': (value) =>
+              value == null || value.isEmpty ? 'Please enter address' : null,
+        },
+        {
+          'controller': TextEditingController(),
+          'label': 'City',
+          'icon': Icons.location_city,
+          'validator': (value) =>
+              value == null || value.isEmpty ? 'Please enter city' : null,
+        },
+        {
+          'controller': TextEditingController(),
+          'label': 'State',
+          'icon': Icons.map,
+          'validator': (value) =>
+              value == null || value.isEmpty ? 'Please enter state' : null,
+        },
+      ]
+    },
+    {
+      'icon': Icons.details,
+      'label': 'Additional',
+      'fields': [
+        {
+          'type': 'dropdown',
+          'label': 'Education Level',
+          'icon': Icons.school,
+          'items': [
+            'High School',
+            'Graduate',
+            'Post Graduate',
+            'Professional Degree'
+          ],
+          'value': null,
+          'validator': (value) =>
+              value == null ? 'Please select education level' : null,
+        },
+        {
+          'type': 'dropdown',
+          'label': 'Income Range',
+          'icon': Icons.money,
+          'items': [
+            'Below 2,00,000',
+            '2,00,000 - 5,00,000',
+            '5,00,000 - 10,00,000',
+            'Above 10,00,000'
+          ],
+          'value': null,
+          'validator': (value) =>
+              value == null ? 'Please select income range' : null,
+        },
+      ]
+    }
+  ];
 
-  // Dropdown Values
+  // Dropdown values
   String? _educationLevel;
   String? _incomeRange;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: _tabs.length, vsync: this);
   }
 
   @override
   void dispose() {
     _tabController.dispose();
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    _addressController.dispose();
-    _cityController.dispose();
-    _stateController.dispose();
-    _nameFocusNode.dispose();
-    _emailFocusNode.dispose();
-    _phoneFocusNode.dispose();
-    super.dispose();
-  }
-
-  void _submitRegistration() {
-    if (_formKey.currentState!.validate()) {
-      // Collect all form data
-      final registrationData = {
-        'Personal': {
-          'name': _nameController.text,
-          'email': _emailController.text,
-          'phone': _phoneController.text,
-        },
-        'Contact': {
-          'address': _addressController.text,
-          'city': _cityController.text,
-          'state': _stateController.text,
-        },
-        'Additional': {
-          'educationLevel': _educationLevel,
-          'incomeRange': _incomeRange,
+    // Dispose all controllers
+    for (var tab in _tabs) {
+      for (var field in tab['fields']) {
+        if (field['controller'] != null) {
+          field['controller'].dispose();
         }
-      };
-
-      // TODO: Implement actual submission logic (e.g., API call)
-      print('Registration Data: $registrationData');
-      
-      // Show success dialog or navigate to next screen
-      _showSuccessDialog();
+      }
     }
-  }
-
-  void _showSuccessDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Registration Successful'),
-        content: const Text('Your registration has been submitted.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 242, 249, 255),
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
-        centerTitle: true,
-        title: const Text(
-          'Registration Form',
-          style: TextStyle(
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: const Color(0xFF4A6CF7),
-      ),
-      body: Row(
-        children: [
-          Container(
-            width: 70,
-            alignment: Alignment.topCenter,
-            padding: const EdgeInsets.only(top: 20),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.90,
+            height: MediaQuery.of(context).size.height * 0.90,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 5,
+                  blurRadius: 15,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               children: [
-                _buildVerticalTab(Icons.person, "Personal", 0),
-                _buildVerticalTab(Icons.contact_mail, "Contact", 1),
-                _buildVerticalTab(Icons.details, "Additional", 2),
+                // App Bar
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF4A6CF7),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Registration Form',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.close, color: Colors.white),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      // Vertical Navigation
+                      Container(
+                        width: 80,
+                        color: Colors.grey[100],
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(_tabs.length, (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                _tabController.animateTo(index);
+                              },
+                              child: AnimatedContainer(
+                                duration: Duration(milliseconds: 300),
+                                width: 60,
+                                height: 60,
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: _tabController.index == index
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: _tabController.index == index
+                                      ? [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.3),
+                                            spreadRadius: 1,
+                                            blurRadius: 5,
+                                          )
+                                        ]
+                                      : [],
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      _tabs[index]['icon'],
+                                      color: _tabController.index == index
+                                          ? Color(0xFF4A6CF7)
+                                          : Colors.grey,
+                                    ),
+                                    Text(
+                                      _tabs[index]['label'],
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: _tabController.index == index
+                                            ? Color(0xFF4A6CF7)
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+
+                      // Form Content
+                      Expanded(
+                        child: Form(
+                          key: _formKey,
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: _tabs.map((tab) {
+                              return SingleChildScrollView(
+                                padding: EdgeInsets.all(20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${tab['label']} Information',
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF4A6CF7),
+                                      ),
+                                    ),
+                                    SizedBox(height: 20),
+                                    ...tab['fields'].map<Widget>((field) {
+                                      if (field['type'] == 'dropdown') {
+                                        return Padding(
+                                          padding: EdgeInsets.only(bottom: 15),
+                                          child:
+                                              DropdownButtonFormField<String>(
+                                            decoration: InputDecoration(
+                                              labelText: field['label'],
+                                              prefixIcon: Icon(field['icon'],
+                                                  color: Color(0xFF4A6CF7)),
+                                              filled: true,
+                                              fillColor: Colors.grey[100],
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                borderSide: BorderSide.none,
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                borderSide: BorderSide(
+                                                  color: Color(0xFF4A6CF7),
+                                                  width: 2,
+                                                ),
+                                              ),
+                                            ),
+                                            items: field['items']
+                                                .map<DropdownMenuItem<String>>(
+                                                    (String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(value),
+                                              );
+                                            }).toList(),
+                                            onChanged: (String? newValue) {
+                                              setState(() {
+                                                if (field['label'] ==
+                                                    'Education Level') {
+                                                  _educationLevel = newValue;
+                                                } else {
+                                                  _incomeRange = newValue;
+                                                }
+                                              });
+                                            },
+                                            validator: field['validator'],
+                                          ),
+                                        );
+                                      }
+                                      return Padding(
+                                        padding: EdgeInsets.only(bottom: 15),
+                                        child: TextFormField(
+                                          controller: field['controller'],
+                                          decoration: InputDecoration(
+                                            labelText: field['label'],
+                                            prefixIcon: Icon(field['icon'],
+                                                color: Color(0xFF4A6CF7)),
+                                            filled: true,
+                                            fillColor: Colors.grey[100],
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              borderSide: BorderSide.none,
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              borderSide: BorderSide(
+                                                color: Color(0xFF4A6CF7),
+                                                width: 2,
+                                              ),
+                                            ),
+                                          ),
+                                          validator: field['validator'],
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Submit Button
+                Padding(
+                  padding: EdgeInsets.all(20),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // Collect form data
+                        final formData = {
+                          'Name': _tabs[0]['fields'][0]['controller'].text,
+                          'Email': _tabs[0]['fields'][1]['controller'].text,
+                          'Phone': _tabs[0]['fields'][2]['controller'].text,
+                          'Address': _tabs[1]['fields'][0]['controller'].text,
+                          'City': _tabs[1]['fields'][1]['controller'].text,
+                          'State': _tabs[1]['fields'][2]['controller'].text,
+                          'Education': _educationLevel,
+                          'Income Range': _incomeRange,
+                        };
+
+                        // Handle form submission
+                        print(formData);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Registration Submitted')),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF4A6CF7),
+                      minimumSize: Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                    child: Text(
+                      'Submit Registration',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-          Expanded(
-            child: Form(
-              key: _formKey,
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  _buildPersonalDetailsTab(),
-                  _buildContactDetailsTab(),
-                  _buildAdditionalDetailsTab(),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-      bottomSheet: Padding(
-        padding: const EdgeInsets.only(bottom: 44.0),
-        child: Center(
-          child: SizedBox(
-            height: 60,
-            width: 300,
-            child: ElevatedButton(
-              onPressed: _submitRegistration,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF4A6CF7),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(33),
-                ),
-              ),
-              child: const Text(
-                'Submit Registration',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
-            ),
-          ),
         ),
       ),
-    );
-  }
-
-  Widget _buildVerticalTab(IconData icon, String label, int index) {
-    return GestureDetector(
-      onTap: () {
-        _tabController.animateTo(index);
-      },
-      child: Container(
-        height: 60,
-        decoration: BoxDecoration(
-          color: _tabController.index == index
-              ? Colors.white
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(32),
-        ),
-        child: Center(
-          child: Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: _tabController.index == index
-                  ? Colors.white
-                  : Colors.transparent,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: _tabController.index == index
-                    ? Colors.white
-                    : Colors.transparent,
-                width: 2,
-              ),
-            ),
-            child: Center(
-              child: Icon(
-                icon,
-                size: 24,
-                color: _tabController.index == index
-                    ? const Color(0xFF4A6CF7)
-                    : const Color.fromARGB(255, 117, 117, 117),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPersonalDetailsTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionTitle('Personal Information'),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _nameController,
-            labelText: 'Full Name',
-            prefixIcon: Icons.person,
-            focusNode: _nameFocusNode,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your full name';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _emailController,
-            labelText: 'Email Address',
-            prefixIcon: Icons.email,
-            keyboardType: TextInputType.emailAddress,
-            focusNode: _emailFocusNode,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your email';
-              }
-              final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-              if (!emailRegex.hasMatch(value)) {
-                return 'Please enter a valid email address';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _phoneController,
-            labelText: 'Phone Number',
-            prefixIcon: Icons.phone,
-            keyboardType: TextInputType.phone,
-            focusNode: _phoneFocusNode,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your phone number';
-              }
-              final phoneRegex = RegExp(r'^\d{10}$');
-              if (!phoneRegex.hasMatch(value)) {
-                return 'Please enter a valid 10-digit phone number';
-              }
-              return null;
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildContactDetailsTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionTitle('Contact Details'),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _addressController,
-            labelText: 'Full Address',
-            prefixIcon: Icons.location_on,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your address';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _cityController,
-            labelText: 'City',
-            prefixIcon: Icons.location_city,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your city';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _stateController,
-            labelText: 'State',
-            prefixIcon: Icons.map,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your state';
-              }
-              return null;
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAdditionalDetailsTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionTitle('Additional Information'),
-          const SizedBox(height: 16),
-          _buildDropdownField(
-            value: _educationLevel,
-            labelText: 'Education Level',
-            items: const [
-              'High School',
-              'Graduate',
-              'Post Graduate',
-              'Professional Degree',
-            ],
-            onChanged: (value) {
-              setState(() {
-                _educationLevel = value;
-              });
-            },
-            validator: (value) {
-              if (value == null) {
-                return 'Please select an education level';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 16),
-          _buildDropdownField(
-            value: _incomeRange,
-            labelText: 'Income Range',
-            items: const [
-              'Below 2,00,000',
-              '2,00,000 - 5,00,000',
-              '5,00,000 - 10,00,000',
-              'Above 10,00,000',
-            ],
-            onChanged: (value) {
-              setState(() {
-                _incomeRange = value;
-              });
-            },
-            validator: (value) {
-              if (value == null) {
-                return 'Please select an income range';
-              }
-              return null;
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-        fontFamily: 'Poppins',
-        fontSize: 22,
-        fontWeight: FontWeight.w600,
-        color: Color(0xFF4A6CF7),
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    TextEditingController? controller,
-    required String labelText,
-    required IconData prefixIcon,
-    TextInputType keyboardType = TextInputType.text,
-    FocusNode? focusNode,
-    String? Function(String?)? validator,
-  }) {
-    return TextFormField(
-      controller: controller,
-      keyboardType: keyboardType,
-      focusNode: focusNode,
-      validator: validator,
-      decoration: InputDecoration(
-        labelText: labelText,
-        prefixIcon: Icon(prefixIcon, color: const Color(0xFF4A6CF7)),
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: Color(0xFF4A6CF7),
-            width: 2,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: Colors.red,
-            width: 2,
-          ),
-        ),
-        labelStyle: TextStyle(
-          fontFamily: 'Poppins',
-          color: Colors.grey[600],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDropdownField({
-    required String labelText,
-    required List<String> items,
-    String? value,
-    void Function(String?)? onChanged,
-    String? Function(String?)? validator,
-  }) {
-    return DropdownButtonFormField<String>(
-      value: value,
-      hint: Text('Select $labelText'),
-      decoration: InputDecoration(
-        labelText: labelText,
-        prefixIcon: const Icon(
-          Icons.arrow_drop_down_circle,
-          color: Color(0xFF4A6CF7),
-        ),
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: Colors.red,
-            width: 2,
-          ),
-        ),
-        labelStyle: TextStyle(
-          fontFamily: 'Poppins',
-          color: Colors.grey[600],
-        ),
-      ),
-      items: items
-          .map((item) => DropdownMenuItem(
-                value: item,
-                child: Text(
-                  item,
-                  style: const TextStyle(fontFamily: 'Poppins'),
-                ),
-              ))
-          .toList(),
-      onChanged: onChanged,
-      validator: validator,
     );
   }
 }
@@ -788,303 +760,317 @@ class VendorRegistrationForm extends StatefulWidget {
 class _VendorRegistrationFormState extends State<VendorRegistrationForm>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-
-  // Form Key
   final _formKey = GlobalKey<FormState>();
 
-  // Controllers for Vendor Details
-  final TextEditingController _businessNameController = TextEditingController();
-  final TextEditingController _gstController = TextEditingController();
-  final TextEditingController _panController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _cityController = TextEditingController();
-  final TextEditingController _stateController = TextEditingController();
-  final TextEditingController _pinCodeController = TextEditingController();
+  // Tab Configuration
+  final List<Map<String, dynamic>> _tabs = [
+    {
+      'icon': Icons.business,
+      'label': 'Business',
+      'fields': [
+        {
+          'controller': TextEditingController(),
+          'label': 'Business Name',
+          'icon': Icons.business_center,
+          'validator': (value) => value == null || value.isEmpty
+              ? 'Please enter business name'
+              : null,
+        },
+        {
+          'controller': TextEditingController(),
+          'label': 'GST Number',
+          'icon': Icons.receipt_long,
+          'validator': (value) =>
+              value == null || value.isEmpty ? 'Please enter GST number' : null,
+        },
+        {
+          'controller': TextEditingController(),
+          'label': 'PAN Number',
+          'icon': Icons.credit_card,
+          'validator': (value) =>
+              value == null || value.isEmpty ? 'Please enter PAN number' : null,
+        },
+      ]
+    },
+    {
+      'icon': Icons.contact_mail,
+      'label': 'Contact',
+      'fields': [
+        {
+          'controller': TextEditingController(),
+          'label': 'Email Address',
+          'icon': Icons.email,
+          'validator': (value) =>
+              value == null || value.isEmpty ? 'Please enter email' : null,
+        },
+        {
+          'controller': TextEditingController(),
+          'label': 'Phone Number',
+          'icon': Icons.phone,
+          'validator': (value) => value == null || value.isEmpty
+              ? 'Please enter phone number'
+              : null,
+        },
+        {
+          'controller': TextEditingController(),
+          'label': 'Address',
+          'icon': Icons.location_on,
+          'validator': (value) =>
+              value == null || value.isEmpty ? 'Please enter address' : null,
+        },
+      ]
+    },
+    {
+      'icon': Icons.details,
+      'label': 'Details',
+      'fields': [
+        {
+          'controller': TextEditingController(),
+          'label': 'City',
+          'icon': Icons.location_city,
+          'validator': (value) =>
+              value == null || value.isEmpty ? 'Please enter city' : null,
+        },
+        {
+          'controller': TextEditingController(),
+          'label': 'State',
+          'icon': Icons.map,
+          'validator': (value) =>
+              value == null || value.isEmpty ? 'Please enter state' : null,
+        },
+        {
+          'controller': TextEditingController(),
+          'label': 'Pin Code',
+          'icon': Icons.pin_drop,
+          'validator': (value) =>
+              value == null || value.isEmpty ? 'Please enter pin code' : null,
+        },
+      ]
+    }
+  ];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: _tabs.length, vsync: this);
   }
 
   @override
   void dispose() {
     _tabController.dispose();
-    _businessNameController.dispose();
-    _gstController.dispose();
-    _panController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    _addressController.dispose();
-    _cityController.dispose();
-    _stateController.dispose();
-    _pinCodeController.dispose();
+    // Dispose all controllers
+    for (var tab in _tabs) {
+      for (var field in tab['fields']) {
+        field['controller'].dispose();
+      }
+    }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7F9),
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
-        centerTitle: true,
-        title: const Text(
-          'Vendor Registration Form',
-          style: TextStyle(
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: const Color.fromARGB(255, 58, 182, 87),
-      ),
-      body: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Vertical Tabs
-          SizedBox(
-            width: 70,
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.90,
+            height: MediaQuery.of(context).size.height * 0.90,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 5,
+                  blurRadius: 15,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
             child: Column(
               children: [
-                _buildVerticalTab(Icons.business, "Business", 0),
-                _buildVerticalTab(Icons.contact_mail, "Contact", 1),
-                _buildVerticalTab(Icons.details, "Details", 2),
+                // App Bar
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 58, 182, 87),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Vendor Registration',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.close, color: Colors.white),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      // Vertical Navigation
+                      Container(
+                        width: 80,
+                        color: Colors.grey[100],
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(_tabs.length, (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                _tabController.animateTo(index);
+                              },
+                              child: AnimatedContainer(
+                                duration: Duration(milliseconds: 300),
+                                width: 60,
+                                height: 60,
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: _tabController.index == index
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: _tabController.index == index
+                                      ? [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.3),
+                                            spreadRadius: 1,
+                                            blurRadius: 5,
+                                          )
+                                        ]
+                                      : [],
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      _tabs[index]['icon'],
+                                      color: _tabController.index == index
+                                          ? Color.fromARGB(255, 58, 182, 87)
+                                          : Colors.grey,
+                                    ),
+                                    Text(
+                                      _tabs[index]['label'],
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: _tabController.index == index
+                                            ? Color.fromARGB(255, 58, 182, 87)
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+
+                      // Form Content
+                      Expanded(
+                        child: Form(
+                          key: _formKey,
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: _tabs.map((tab) {
+                              return SingleChildScrollView(
+                                padding: EdgeInsets.all(20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${tab['label']} Information',
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color.fromARGB(255, 58, 182, 87),
+                                      ),
+                                    ),
+                                    SizedBox(height: 20),
+                                    ...tab['fields'].map<Widget>((field) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(bottom: 15),
+                                        child: TextFormField(
+                                          controller: field['controller'],
+                                          decoration: InputDecoration(
+                                            labelText: field['label'],
+                                            prefixIcon: Icon(field['icon'],
+                                                color: Color.fromARGB(
+                                                    255, 58, 182, 87)),
+                                            filled: true,
+                                            fillColor: Colors.grey[100],
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              borderSide: BorderSide.none,
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              borderSide: BorderSide(
+                                                color: Color.fromARGB(
+                                                    255, 58, 182, 87),
+                                                width: 2,
+                                              ),
+                                            ),
+                                          ),
+                                          validator: field['validator'],
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Submit Button
+                Padding(
+                  padding: EdgeInsets.all(20),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // Handle form submission
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Registration Submitted')),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 58, 182, 87),
+                      minimumSize: Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                    child: Text(
+                      'Submit Registration',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-          // Tab Content
-          Expanded(
-            child: Form(
-              key: _formKey,
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  _buildBusinessDetailsTab(),
-                  _buildContactDetailsTab(),
-                  _buildAdditionalDetailsTab(),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-      bottomSheet: Padding(
-        padding: const EdgeInsets.only(bottom: 44.0),
-        child: SizedBox(
-          height: 60,
-          width: 300,
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 58, 182, 87),
-              padding: EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(33),
-              ),
-            ),
-            child: Text(
-              'Submit Registration',
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-                fontSize: 18,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Vertical Tab
-  Widget _buildVerticalTab(IconData icon, String label, int index) {
-    return GestureDetector(
-      onTap: () {
-        _tabController.animateTo(index);
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          height: 60,
-          decoration: BoxDecoration(
-              color: _tabController.index == index
-                  ? const Color.fromARGB(255, 255, 255,
-                      255) // Highlight active tab with background color
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(32)),
-          child: Center(
-            child: Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                color: _tabController.index == index
-                    ? Colors.white
-                    : Colors.transparent, // Change circle color on active tab
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: _tabController.index == index
-                      ? Colors.white
-                      : Colors.transparent,
-                  width: 2,
-                ),
-              ),
-              child: Center(
-                child: Icon(
-                  icon,
-                  size: 24,
-                  color: _tabController.index == index
-                      ? const Color.fromARGB(255, 58, 182, 87)
-                      : const Color.fromARGB(255, 117, 117,
-                          117), // Change icon color for active tab
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Business Details Tab
-  Widget _buildBusinessDetailsTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionTitle('Business Information'),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _businessNameController,
-            labelText: 'Business Name',
-            prefixIcon: Icons.business,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _gstController,
-            labelText: 'GST Number',
-            prefixIcon: Icons.receipt_long,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _panController,
-            labelText: 'PAN Number',
-            prefixIcon: Icons.article,
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Contact Details Tab
-  Widget _buildContactDetailsTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionTitle('Contact Details'),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _emailController,
-            labelText: 'Email Address',
-            prefixIcon: Icons.email,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _phoneController,
-            labelText: 'Phone Number',
-            prefixIcon: Icons.phone,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _addressController,
-            labelText: 'Address',
-            prefixIcon: Icons.location_on,
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Additional Details Tab
-  Widget _buildAdditionalDetailsTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionTitle('Additional Information'),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _cityController,
-            labelText: 'City',
-            prefixIcon: Icons.location_city,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _stateController,
-            labelText: 'State',
-            prefixIcon: Icons.map,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _pinCodeController,
-            labelText: 'Pin Code',
-            prefixIcon: Icons.pin,
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Reusable Section Title
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-        fontFamily: 'Poppins',
-        fontSize: 22,
-        fontWeight: FontWeight.w600,
-        color: const Color.fromARGB(255, 58, 182, 87),
-      ),
-    );
-  }
-
-  // Reusable Text Field
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String labelText,
-    required IconData prefixIcon,
-    TextInputType keyboardType = TextInputType.text,
-  }) {
-    return TextFormField(
-      controller: controller,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-        labelText: labelText,
-        prefixIcon:
-            Icon(prefixIcon, color: const Color.fromARGB(255, 58, 182, 87)),
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: const Color.fromARGB(255, 58, 182, 87),
-            width: 2,
-          ),
-        ),
-        labelStyle: TextStyle(
-          fontFamily: 'Poppins',
-          color: Colors.grey[600],
         ),
       ),
     );
@@ -1105,291 +1091,312 @@ class _FranchiseeRegistrationFormState extends State<FranchiseeRegistrationForm>
   // Form Key
   final _formKey = GlobalKey<FormState>();
 
-  // Controllers for Franchisee Details
-  final TextEditingController _franchiseeNameController =
-      TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _businessNameController = TextEditingController();
-  final TextEditingController _taxIdController = TextEditingController();
-
-  // Focus Nodes for Accessibility
-  final FocusNode _franchiseeNameFocusNode = FocusNode();
-  final FocusNode _emailFocusNode = FocusNode();
-  final FocusNode _phoneFocusNode = FocusNode();
+  // Tab Configuration
+  final List<Map<String, dynamic>> _tabs = [
+    {
+      'icon': Icons.person,
+      'label': 'Personal',
+      'fields': [
+        {
+          'controller': TextEditingController(),
+          'label': 'Franchisee Name',
+          'icon': Icons.person,
+          'validator': (value) => value == null || value.isEmpty
+              ? 'Please enter your franchisee name'
+              : null,
+        },
+        {
+          'controller': TextEditingController(),
+          'label': 'Email Address',
+          'icon': Icons.email,
+          'validator': (value) => value == null || value.isEmpty
+              ? 'Please enter email address'
+              : null,
+        },
+        {
+          'controller': TextEditingController(),
+          'label': 'Phone Number',
+          'icon': Icons.phone,
+          'validator': (value) => value == null || value.isEmpty
+              ? 'Please enter phone number'
+              : null,
+        },
+      ]
+    },
+    {
+      'icon': Icons.business,
+      'label': 'Business',
+      'fields': [
+        {
+          'controller': TextEditingController(),
+          'label': 'Business Name',
+          'icon': Icons.business,
+          'validator': (value) => value == null || value.isEmpty
+              ? 'Please enter your business name'
+              : null,
+        },
+        {
+          'controller': TextEditingController(),
+          'label': 'Business Address',
+          'icon': Icons.location_on,
+          'validator': (value) => value == null || value.isEmpty
+              ? 'Please enter your business address'
+              : null,
+        },
+      ]
+    },
+    {
+      'icon': Icons.payment,
+      'label': 'Tax Details',
+      'fields': [
+        {
+          'controller': TextEditingController(),
+          'label': 'Tax ID',
+          'icon': Icons.payment,
+          'validator': (value) => value == null || value.isEmpty
+              ? 'Please enter your tax ID'
+              : null,
+        },
+      ]
+    }
+  ];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: _tabs.length, vsync: this);
   }
 
   @override
   void dispose() {
     _tabController.dispose();
-    _franchiseeNameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    _addressController.dispose();
-    _businessNameController.dispose();
-    _taxIdController.dispose();
-    _franchiseeNameFocusNode.dispose();
-    _emailFocusNode.dispose();
-    _phoneFocusNode.dispose();
+    // Dispose all controllers
+    for (var tab in _tabs) {
+      for (var field in tab['fields']) {
+        if (field['controller'] != null) {
+          field['controller'].dispose();
+        }
+      }
+    }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7F9),
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
-        centerTitle: true,
-        title: const Text(
-          'Franchis Registration',
-          style: TextStyle(
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: const Color.fromARGB(255, 228, 160, 0),
-      ),
-      body: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Sidebar Tabs
-          SizedBox(
-            width: 70,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 18.0, left: 6),
-              child: Column(
-                children: [
-                  _buildVerticalTab(Icons.person, "Personal", 0),
-                  _buildVerticalTab(Icons.business, "Business", 1),
-                  _buildVerticalTab(Icons.payment, "Tax Details", 2),
-                ],
-              ),
-            ),
-          ),
-          // Main Content Area
-          Expanded(
-            child: Form(
-              key: _formKey,
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  _buildPersonalDetailsTab(),
-                  _buildBusinessDetailsTab(),
-                  _buildTaxDetailsTab(),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-      bottomSheet: Padding(
-        padding: const EdgeInsets.only(bottom: 44.0),
-        child: SizedBox(
-          height: 60,
-          width: 300,
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 228, 160, 0),
-              padding: EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(33),
-              ),
-            ),
-            child: Text(
-              'Submit Registration',
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-                fontSize: 18,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Vertical Tab Builder
-  Widget _buildVerticalTab(IconData icon, String label, int index) {
-    return GestureDetector(
-      onTap: () {
-        _tabController.animateTo(index);
-      },
-      child: Container(
-        height: 60,
-        decoration: BoxDecoration(
-          color: _tabController.index == index
-              ? Color.fromARGB(255, 255, 255, 255)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(32),
-        ),
+      backgroundColor: Colors.white,
+      body: SafeArea(
         child: Center(
           child: Container(
-            width: 50,
-            height: 50,
+            width: MediaQuery.of(context).size.width * 0.90,
+            height: MediaQuery.of(context).size.height * 0.90,
             decoration: BoxDecoration(
-              color: _tabController.index == index
-                  ? Colors.white
-                  : Colors.transparent,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: _tabController.index == index
-                    ? Colors.white
-                    : Colors.transparent,
-                width: 2,
-              ),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 5,
+                  blurRadius: 15,
+                  offset: Offset(0, 3),
+                ),
+              ],
             ),
-            child: Center(
-              child: Icon(
-                icon,
-                size: 24,
-                color: _tabController.index == index
-                    ? const Color.fromARGB(255, 228, 160, 0)
-                    : Colors.grey,
-              ),
+            child: Column(
+              children: [
+                // App Bar
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 255, 181, 8),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Franchisee Registration',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.close, color: Colors.white),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      // Vertical Navigation
+                      Container(
+                        width: 80,
+                        color: Colors.grey[100],
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(_tabs.length, (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                _tabController.animateTo(index);
+                              },
+                              child: AnimatedContainer(
+                                duration: Duration(milliseconds: 300),
+                                width: 60,
+                                height: 60,
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: _tabController.index == index
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: _tabController.index == index
+                                      ? [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.3),
+                                            spreadRadius: 1,
+                                            blurRadius: 5,
+                                          )
+                                        ]
+                                      : [],
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      _tabs[index]['icon'],
+                                      color: _tabController.index == index
+                                         ? const Color.fromARGB(255, 255, 181, 8)
+                                          : Colors.grey,
+                                    ),
+                                    Text(
+                                      _tabs[index]['label'],
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: _tabController.index == index
+                                            ? const Color.fromARGB(255, 255, 181, 8)
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+
+                      // Form Content
+                      Expanded(
+                        child: Form(
+                          key: _formKey,
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: _tabs.map((tab) {
+                              return SingleChildScrollView(
+                                padding: EdgeInsets.all(20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${tab['label']} Information',
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color.fromARGB(255, 255, 181, 8),
+                                      ),
+                                    ),
+                                    SizedBox(height: 20),
+                                    ...tab['fields'].map<Widget>((field) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(bottom: 15),
+                                        child: TextFormField(
+                                          controller: field['controller'],
+                                          decoration: InputDecoration(
+                                            labelText: field['label'],
+                                            prefixIcon: Icon(field['icon'],
+                                                color: const Color.fromARGB(255, 255, 181, 8),),
+                                            filled: true,
+                                            fillColor: Colors.grey[100],
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              borderSide: BorderSide.none,
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              borderSide: BorderSide(
+                                                color: const Color.fromARGB(255, 255, 181, 8),
+                                                width: 2,
+                                              ),
+                                            ),
+                                          ),
+                                          validator: field['validator'],
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Submit Button
+                Padding(
+                  padding: EdgeInsets.all(20),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // Collect form data
+                        final formData = {
+                          'Franchisee Name':
+                              _tabs[0]['fields'][0]['controller'].text,
+                          'Email': _tabs[0]['fields'][1]['controller'].text,
+                          'Phone': _tabs[0]['fields'][2]['controller'].text,
+                          'Business Name':
+                              _tabs[1]['fields'][0]['controller'].text,
+                          'Business Address':
+                              _tabs[1]['fields'][1]['controller'].text,
+                          'Tax ID': _tabs[2]['fields'][0]['controller'].text,
+                        };
+
+                        // Handle form submission
+                        print(formData);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Registration Submitted')),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 255, 181, 8),
+                      minimumSize: Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                    child: Text(
+                      'Submit Registration',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  // Personal Details Tab
-  Widget _buildPersonalDetailsTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionTitle('Personal Information'),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _franchiseeNameController,
-            labelText: 'Franchis Name',
-            prefixIcon: Icons.person,
-            focusNode: _franchiseeNameFocusNode,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _emailController,
-            labelText: 'Email Address',
-            prefixIcon: Icons.email,
-            keyboardType: TextInputType.emailAddress,
-            focusNode: _emailFocusNode,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _phoneController,
-            labelText: 'Phone Number',
-            prefixIcon: Icons.phone,
-            keyboardType: TextInputType.phone,
-            focusNode: _phoneFocusNode,
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Business Details Tab
-  Widget _buildBusinessDetailsTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionTitle('Business Information'),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _businessNameController,
-            labelText: 'Business Name',
-            prefixIcon: Icons.business,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _addressController,
-            labelText: 'Business Address',
-            prefixIcon: Icons.location_on,
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Tax Details Tab
-  Widget _buildTaxDetailsTab() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildSectionTitle('Tax Information'),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _taxIdController,
-            labelText: 'Tax ID',
-            prefixIcon: Icons.payment,
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Section Title
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-          fontFamily: 'Poppins',
-          fontSize: 22,
-          fontWeight: FontWeight.w600,
-          color: const Color.fromARGB(255, 228, 160, 0)),
-    );
-  }
-
-  // Reusable Text Field
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String labelText,
-    required IconData prefixIcon,
-    TextInputType keyboardType = TextInputType.text,
-    FocusNode? focusNode,
-  }) {
-    return TextFormField(
-      controller: controller,
-      keyboardType: keyboardType,
-      focusNode: focusNode,
-      decoration: InputDecoration(
-        labelText: labelText,
-        prefixIcon: Icon(
-          prefixIcon,
-          color: const Color.fromARGB(255, 228, 160, 0),
-        ),
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: const Color.fromARGB(255, 228, 160, 0),
-            width: 2,
-          ),
-        ),
-        labelStyle: TextStyle(
-          fontFamily: 'Poppins',
-          color: Colors.grey[600],
         ),
       ),
     );

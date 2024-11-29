@@ -9,6 +9,7 @@ import 'package:myapp/others/prime.dart';
 import 'dart:math' as math;
 
 import 'package:myapp/slider.dart';
+import 'package:myapp/usertype.dart';
 
 
 void main() {
