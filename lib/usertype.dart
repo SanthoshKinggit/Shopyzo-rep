@@ -1,14 +1,14 @@
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:379606062.
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:1451730466.
-// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, unused_field, use_build_context_synchronously, prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_const_constructors_in_immutables, sort_child_properties_last, unused_import, avoid_print, unused_element
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, unused_field, use_build_context_synchronously, prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_const_constructors_in_immutables, sort_child_properties_last, unused_import, avoid_print, unused_element, unnecessary_const
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myapp/homepage.dart';
-import 'package:myapp/person.dart';
-import 'package:myapp/prime.dart';
-import 'package:myapp/splashscreen.dart';
-import 'package:myapp/step.dart';
+import 'package:myapp/log.dart';
+import 'package:myapp/others/prime.dart';
+import 'package:myapp/mainpages/splashscreen.dart';
+import 'package:myapp/mainpages/step.dart';
+import 'package:flutter/material.dart';
 
 class UserTypeSelection extends StatefulWidget {
   const UserTypeSelection({super.key});
@@ -27,31 +27,31 @@ class _UserTypeSelectionState extends State<UserTypeSelection>
       title: 'Customer',
       icon: Icons.person,
       description: 'Browse and purchase products',
-      fontFamily: 'Poppins',
-      backgroundColor: const Color.fromARGB(255, 148, 193, 226),
-      iconColor: Colors.blue,
-      destination: CustomerRegistrationForm(),
-      iconSize: 33,
+      backgroundColor: const Color(0xFF6FA3EF),
+      iconColor: Colors.white,
+      destination: AttractiveRegistrationForm(),
+      fontFamily: 'poppins',
+      iconSize: 24,
     ),
     UserTypeItem(
       title: 'Vendor',
-      icon: Icons.store_rounded,
-      description: 'Sell products and manage inventory',
-      backgroundColor: const Color.fromARGB(255, 149, 255, 152),
-      iconColor: Colors.green,
+      icon: Icons.storefront,
+      description: 'Sell products and manage',
+      backgroundColor: const Color.fromARGB(255, 58, 182, 87),
+      iconColor: Colors.white,
       destination: VendorRegistrationForm(),
-      fontFamily: 'Poppins',
-      iconSize: 33,
+      fontFamily: 'poppins',
+      iconSize: 24,
     ),
     UserTypeItem(
-      title: 'Francis',
-      icon: Icons.admin_panel_settings,
-      description: 'System administration and management',
-      backgroundColor: const Color.fromARGB(255, 255, 227, 143),
-      iconColor: const Color.fromARGB(255, 226, 170, 0),
+      title: 'Franchis',
+      icon: Icons.business_center,
+      description: 'Manage and expand network',
+      backgroundColor: const Color.fromARGB(255, 207, 157, 40),
+      iconColor: Colors.white,
       destination: FranchiseeRegistrationForm(),
-      fontFamily: 'Poppins',
-      iconSize: 50,
+      fontFamily: 'poppins',
+      iconSize: 24,
     ),
   ];
 
@@ -76,12 +76,26 @@ class _UserTypeSelectionState extends State<UserTypeSelection>
       _selectedIndex = index;
     });
 
-    // Add a slight delay for the selection animation
     Future.delayed(const Duration(milliseconds: 200), () {
       Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (context) => _userTypes[index].destination,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              _userTypes[index].destination,
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            var begin = const Offset(1.0, 0.0);
+            var end = Offset.zero;
+            var curve = Curves.easeInOut;
+            var tween = Tween(begin: begin, end: end).chain(
+              CurveTween(curve: curve),
+            );
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 500),
         ),
       );
     });
@@ -95,65 +109,75 @@ class _UserTypeSelectionState extends State<UserTypeSelection>
       onTap: () => _navigateToDestination(context, index),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        margin: const EdgeInsets.only(bottom: 16),
+        margin: const EdgeInsets.symmetric(vertical: 10),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: isSelected ? userType.backgroundColor : Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            colors: [
+              userType.backgroundColor,
+              userType.backgroundColor.withOpacity(0.7),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
+              color: userType.backgroundColor.withOpacity(0.5),
+              blurRadius: isSelected ? 30 : 10,
+              offset: const Offset(0, 10),
             ),
           ],
-          border: Border.all(
-            color: isSelected ? userType.iconColor : Colors.grey.shade200,
-            width: 2,
-          ),
+          border: isSelected
+              ? Border.all(
+                  color: Colors.white.withOpacity(0.8),
+                  width: 3,
+                )
+              : Border.all(
+                  color: Colors.transparent,
+                ),
         ),
         child: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(12),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              height: isSelected ? 60 : 50,
+              width: isSelected ? 60 : 50,
               decoration: BoxDecoration(
-                color: isSelected
-                    ? userType.iconColor.withOpacity(0.2)
-                    : userType.backgroundColor.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12),
+                color: userType.iconColor.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(15),
               ),
               child: Icon(
                 userType.icon,
                 color: userType.iconColor,
-                size: 28,
+                size: isSelected ? 32 : 28,
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 20),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     userType.title,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontFamily: userType.fontFamily,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    style: TextStyle(
+                      fontFamily: 'poppins',
+                      fontSize: isSelected ? 20 : 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 8),
                   Text(
                     userType.description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontFamily: userType.fontFamily,
-                          color: Colors.grey[600],
-                        ),
+                    style: TextStyle(
+                      fontFamily: 'poppins',
+                      fontSize: 14,
+                      color: Colors.white.withOpacity(0.8),
+                    ),
                   ),
                 ],
               ),
-            ),
-            Icon(
-              Icons.chevron_right,
-              color: isSelected ? userType.iconColor : Colors.grey,
             ),
           ],
         ),
@@ -164,87 +188,45 @@ class _UserTypeSelectionState extends State<UserTypeSelection>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          actions: [],
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back_ios)),
-          backgroundColor: const Color.fromARGB(255, 230, 244, 253),
-          centerTitle: true,
-          title: Text(
-            'Select User Type',
-            style: TextStyle(
-              fontSize: 25,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w600,
-              color: const Color.fromARGB(255, 52, 55, 68),
-              letterSpacing: 0.5,
-              shadows: [
-                Shadow(
-                  offset: const Offset(0, 2),
-                  blurRadius: 4,
-                  color: Colors.black.withOpacity(0.1),
-                ),
-              ],
-            ),
-          )),
-      backgroundColor: const Color.fromARGB(255, 230, 244, 253),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: SafeArea(
-        child: Stack(
-          children: [
-            const WaveBackground(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 40),
-                ShaderMask(
-                  shaderCallback: (bounds) => LinearGradient(
-                    colors: [
-                      Colors.deepPurple,
-                      const Color.fromARGB(255, 158, 113, 238)
-                    ],
-                  ).createShader(bounds),
-                  child: Text(
-                    'Choose your role in the application',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                      letterSpacing: 0.3,
-                    ),
-                  ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 80),
+              Text(
+                'Choose Your Role',
+                style: TextStyle(
+                  fontFamily: 'poppins',
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: const Color.fromARGB(255, 0, 0, 0),
                 ),
-                const SizedBox(height: 40),
-                Expanded(
-                  child: Center(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      itemCount: _userTypes.length,
-                      itemBuilder: (context, index) {
-                        return TweenAnimationBuilder<double>(
-                          tween: Tween(begin: 0.0, end: 1.0),
-                          duration: Duration(milliseconds: 400 + (index * 100)),
-                          builder: (context, value, child) {
-                            return Transform.translate(
-                              offset: Offset(0, 50 * (1 - value)),
-                              child: Opacity(
-                                opacity: value,
-                                child: _buildUserTypeCard(index),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Select one to proceed further',
+                style: TextStyle(
+                  fontFamily: 'poppins',
+                  fontSize: 16,
+                  color: const Color.fromARGB(255, 0, 0, 0),
                 ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 30),
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: _userTypes.length,
+                  itemBuilder: (context, index) {
+                    return _buildUserTypeCard(index);
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -261,9 +243,6 @@ class UserTypeItem {
   final String fontFamily;
   final double iconSize;
 
-  // Added iconSize for controlling the icon size
-
-  // Constructor with all parameters, including the iconSize
   UserTypeItem({
     required this.title,
     required this.icon,
@@ -272,79 +251,8 @@ class UserTypeItem {
     required this.iconColor,
     required this.destination,
     required this.fontFamily,
-    required this.iconSize, // Added iconSize parameter here
+    required this.iconSize,
   });
-}
-
-class _UserTypeIcon extends StatefulWidget {
-  final IconData icon;
-  final String label;
-  final Color color;
-  final Widget destination;
-
-  const _UserTypeIcon({
-    required this.icon,
-    required this.label,
-    required this.color,
-    required this.destination,
-  });
-
-  @override
-  State<_UserTypeIcon> createState() => _UserTypeIconState();
-}
-
-class _UserTypeIconState extends State<_UserTypeIcon> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => widget.destination,
-          ),
-        );
-      },
-      child: Column(
-        children: [
-          Hero(
-            tag: widget.label,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                color: widget.color.withOpacity(0.9),
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: widget.color.withOpacity(0.6),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Icon(
-                widget.icon,
-                size: 40,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            widget.label,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Poppins',
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class CustomTextField extends StatelessWidget {
@@ -383,722 +291,493 @@ class CustomTextField extends StatelessWidget {
   }
 }
 
-class CustomerRegistrationForm extends StatefulWidget {
+
+class RegistrationForm extends StatefulWidget {
+  const RegistrationForm({Key? key}) : super(key: key);
+
   @override
-  _CustomerRegistrationFormState createState() =>
-      _CustomerRegistrationFormState();
+  _RegistrationFormState createState() => _RegistrationFormState();
 }
 
-class _CustomerRegistrationFormState extends State<CustomerRegistrationForm> {
-  final _formKey = GlobalKey<FormState>();
+class _RegistrationFormState extends State<RegistrationForm> with SingleTickerProviderStateMixin {
+  // Form Key
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  
+  // Tab Controller
+  late TabController _tabController;
 
-  // Personal Details Controllers
+  // Text Controllers
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _dobController = TextEditingController();
-  final TextEditingController _genderController = TextEditingController();
-
-  // Contact Details Controllers
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
   final TextEditingController _stateController = TextEditingController();
-  final TextEditingController _pinCodeController = TextEditingController();
 
-  // Additional Details Controllers
-  final TextEditingController _occupationController = TextEditingController();
-  final TextEditingController _incomeRangeController = TextEditingController();
-  final TextEditingController _educationController = TextEditingController();
+  // Focus Nodes
+  final FocusNode _nameFocusNode = FocusNode();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _phoneFocusNode = FocusNode();
 
-  // Expansion state for sections
-  bool _isPersonalDetailsExpanded = true;
-  bool _isContactDetailsExpanded = false;
-  bool _isAdditionalDetailsExpanded = false;
-
-  // Gender selection
-  List<String> genderOptions = ['Male', 'Female', 'Other'];
-  String? selectedGender;
-
-  // Income range options
-  List<String> incomeRangeOptions = [
-    'Below 2,00,000',
-    '2,00,000 - 5,00,000',
-    '5,00,000 - 10,00,000',
-    'Above 10,00,000'
-  ];
-  String? selectedIncomeRange;
-
-  // Education options
-  List<String> educationOptions = [
-    'High School',
-    'Graduate',
-    'Post Graduate',
-    'Professional Degree',
-    'Other'
-  ];
-  String? selectedEducation;
+  // Dropdown Values
+  String? _educationLevel;
+  String? _incomeRange;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => UserTypeSelection()),
-            );
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.help,
-              color: Colors.white,
-            ),
-          )
-        ],
-        centerTitle: true,
-        title: Text(
-          'Customer Registration',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.blue,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Stack(
-          children: [
-            Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 100.0),
-                child: ListView(
-                  children: [
-                    // Personal Details Section
-                    _buildExpandableSection(
-                      color: const Color.fromARGB(255, 19, 149, 255),
-                      titleColor: Colors.white,
-                      title: 'Personal Details',
-                      isExpanded: _isPersonalDetailsExpanded,
-                      onTap: () {
-                        setState(() {
-                          _isPersonalDetailsExpanded =
-                              !_isPersonalDetailsExpanded;
-                          // Close other sections
-                          _isContactDetailsExpanded = false;
-                          _isAdditionalDetailsExpanded = false;
-                        });
-                      },
-                      child: _buildPersonalDetailsForm(),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Contact Details Section
-                    _buildExpandableSection(
-                      color: Colors.blue,
-                      titleColor: Colors.white,
-                      title: 'Contact Details',
-                      isExpanded: _isContactDetailsExpanded,
-                      onTap: () {
-                        setState(() {
-                          _isContactDetailsExpanded =
-                              !_isContactDetailsExpanded;
-                          // Close other sections
-                          _isPersonalDetailsExpanded = false;
-                          _isAdditionalDetailsExpanded = false;
-                        });
-                      },
-                      child: _buildContactDetailsForm(),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Additional Details Section
-                    _buildExpandableSection(
-                      color: Colors.blue,
-                      titleColor: Colors.white,
-                      title: 'Additional Details',
-                      isExpanded: _isAdditionalDetailsExpanded,
-                      onTap: () {
-                        setState(() {
-                          _isAdditionalDetailsExpanded =
-                              !_isAdditionalDetailsExpanded;
-                          // Close other sections
-                          _isPersonalDetailsExpanded = false;
-                          _isContactDetailsExpanded = false;
-                        });
-                      },
-                      child: _buildAdditionalDetailsForm(),
-                    ),
-
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: _submitForm,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                      ),
-                      child: Text(
-                        'Register',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // Expandable Section Widget
-  Widget _buildExpandableSection({
-    required String title,
-    required Color titleColor,
-    required bool isExpanded,
-    required VoidCallback onTap,
-    required Widget child,
-    required Color color,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(12),
-        color: color, // Use the provided color here
-      ),
-      child: Column(
-        children: [
-          ListTile(
-            title: Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: titleColor, // Use the provided title color
-              ),
-            ),
-            trailing: Icon(
-              isExpanded ? Icons.expand_less : Icons.expand_more,
-              color: Colors.blue,
-            ),
-            onTap: onTap,
-          ),
-          if (isExpanded) child,
-        ],
-      ),
-    );
-  }
-
-  // Personal Details Form
-  Widget _buildPersonalDetailsForm() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          _buildTextField(
-            controller: _nameController,
-            hintText: 'Full Name',
-            icon: Icons.person,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _emailController,
-            hintText: 'Email Address',
-            icon: Icons.email,
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _phoneController,
-            hintText: 'Phone Number',
-            icon: Icons.phone,
-            keyboardType: TextInputType.phone,
-          ),
-          const SizedBox(height: 16),
-          _buildDateField(
-            controller: _dobController,
-            hintText: 'Date of Birth',
-            icon: Icons.calendar_today,
-          ),
-          const SizedBox(height: 16),
-          _buildDropdownField(
-            value: selectedGender,
-            color: Colors.black,
-            hintText: 'Gender',
-            icon: Icons.person_outline,
-            items: genderOptions,
-            onChanged: (value) {
-              setState(() {
-                selectedGender = value;
-              });
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Contact Details Form
-  Widget _buildContactDetailsForm() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          _buildTextField(
-            controller: _addressController,
-            hintText: 'Full Address',
-            icon: Icons.location_on,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _cityController,
-            hintText: 'City',
-            icon: Icons.location_city,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _stateController,
-            hintText: 'State',
-            icon: Icons.map,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _pinCodeController,
-            hintText: 'PIN Code',
-            icon: Icons.post_add,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Additional Details Form
-  Widget _buildAdditionalDetailsForm() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          _buildTextField(
-              controller: _occupationController,
-              hintText: 'Occupation',
-              icon: Icons.work,
-              color: Colors.black),
-          const SizedBox(height: 16),
-          _buildDropdownField(
-            value: selectedIncomeRange,
-            hintText: 'Income Range',
-            icon: Icons.attach_money,
-            color: Colors.black,
-            items: incomeRangeOptions,
-            onChanged: (value) {
-              setState(() {
-                selectedIncomeRange = value;
-              });
-            },
-          ),
-          const SizedBox(height: 16),
-          _buildDropdownField(
-            value: selectedEducation,
-            hintText: 'Education',
-            icon: Icons.school,
-            color: Colors.black,
-            items: educationOptions,
-            onChanged: (value) {
-              setState(() {
-                selectedEducation = value;
-              });
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Reusable TextField Widget
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String hintText,
-    required IconData icon,
-    TextInputType keyboardType = TextInputType.text,
-    Color color = Colors.blue, // Added color property
-    List<TextInputFormatter>? inputFormatters,
-  }) {
-    return TextField(
-      controller: controller,
-      keyboardType: keyboardType,
-      inputFormatters: inputFormatters,
-      cursorColor: Colors.blue,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyle(
-          color: Colors.grey[600],
-          fontSize: 16,
-        ),
-        prefixIcon: Icon(
-          icon,
-          color: Colors.grey[600],
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        filled: true,
-        fillColor: const Color.fromARGB(255, 255, 255, 255),
-      ),
-    );
-  }
-
-  // Date Field Widget
-  Widget _buildDateField({
-    required TextEditingController controller,
-    required String hintText,
-    required IconData icon,
-  }) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: Icon(icon),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        filled: true,
-        fillColor: Colors.white,
-      ),
-      readOnly: true,
-      onTap: () async {
-        DateTime? pickedDate = await showDatePicker(
-          context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime(1950),
-          lastDate: DateTime.now(),
-        );
-
-        if (pickedDate != null) {
-          setState(() {
-            controller.text =
-                "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-          });
-        }
-      },
-    );
-  }
-
-  // Dropdown Field Widget
-  Widget _buildDropdownField({
-    required String? value,
-    required String hintText,
-    required IconData icon,
-    required List<String> items,
-    required void Function(String?) onChanged,
-    required Color color,
-  }) {
-    return DropdownButtonFormField<String>(
-      value: value,
-      decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: Icon(
-          icon,
-          color: const Color.fromARGB(255, 0, 0, 0),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        filled: true,
-        fillColor: Colors.white,
-      ),
-      items: items
-          .map((item) => DropdownMenuItem(
-                value: item,
-                child: Text(item),
-              ))
-          .toList(),
-      onChanged: onChanged,
-    );
-  }
-
-  // Form Submission Method
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      // Validate and process form data
-      print('Personal Details:');
-      print('Name: ${_nameController.text}');
-      print('Email: ${_emailController.text}');
-      print('Phone: ${_phoneController.text}');
-      print('DOB: ${_dobController.text}');
-      print('Gender: $selectedGender');
-
-      print('\nContact Details:');
-      print('Address: ${_addressController.text}');
-      print('City: ${_cityController.text}');
-      print('State: ${_stateController.text}');
-      print('PIN Code: ${_pinCodeController.text}');
-
-      print('\nAdditional Details:');
-      print('Occupation: ${_occupationController.text}');
-      print('Income Range: $selectedIncomeRange');
-      print('Education: $selectedEducation');
-
-      // Navigate to Payment screen
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const PaymentApp()),
-      );
-
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Customer Registration Submitted')),
-      );
-    }
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
   void dispose() {
-    // Dispose all controllers
+    _tabController.dispose();
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
-    _dobController.dispose();
     _addressController.dispose();
     _cityController.dispose();
     _stateController.dispose();
-    _pinCodeController.dispose();
-    _occupationController.dispose();
+    _nameFocusNode.dispose();
+    _emailFocusNode.dispose();
+    _phoneFocusNode.dispose();
     super.dispose();
   }
-}
 
-class WaveBackground1 extends StatelessWidget {
-  const WaveBackground1({super.key});
+  void _submitRegistration() {
+    if (_formKey.currentState!.validate()) {
+      // Collect all form data
+      final registrationData = {
+        'Personal': {
+          'name': _nameController.text,
+          'email': _emailController.text,
+          'phone': _phoneController.text,
+        },
+        'Contact': {
+          'address': _addressController.text,
+          'city': _cityController.text,
+          'state': _stateController.text,
+        },
+        'Additional': {
+          'educationLevel': _educationLevel,
+          'incomeRange': _incomeRange,
+        }
+      };
+
+      // TODO: Implement actual submission logic (e.g., API call)
+      print('Registration Data: $registrationData');
+      
+      // Show success dialog or navigate to next screen
+      _showSuccessDialog();
+    }
+  }
+
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Registration Successful'),
+        content: const Text('Your registration has been submitted.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: WavePainter1(),
-      child: Container(),
-    );
-  }
-}
-
-class WavePainter1 extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    // Define colors
-    final lightBlue = Color.fromARGB(255, 239, 249, 255);
-    final mediumBlue = Color(0xFF90CAF9);
-    final darkBlue = Color(0xFF2196F3);
-
-    // Create gradient paint
-    final Paint gradientPaint = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [lightBlue, mediumBlue],
-      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
-
-    // Draw background
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.width, size.height),
-      Paint()..color = lightBlue,
-    );
-
-    // Draw top-left circle
-    final topLeftCircle = Path()
-      ..addOval(Rect.fromCircle(
-        center: Offset(size.width * 0.2, size.height * 0.2),
-        radius: size.width * 0.3,
-      ));
-    canvas.drawPath(
-      topLeftCircle,
-      Paint()
-        ..color = darkBlue.withOpacity(0.2)
-        ..style = PaintingStyle.fill,
-    );
-
-    // Draw bottom-right circle
-    final bottomRightCircle = Path()
-      ..addOval(Rect.fromCircle(
-        center: Offset(size.width * 0.8, size.height * 0.8),
-        radius: size.width * 0.3,
-      ));
-    canvas.drawPath(
-      bottomRightCircle,
-      Paint()
-        ..color = darkBlue.withOpacity(0.2)
-        ..style = PaintingStyle.fill,
-    );
-
-    // Draw center circle with gradient
-    final centerCircle = Path()
-      ..addOval(Rect.fromCircle(
-        center: Offset(size.width * 0.5, size.height * 0.4),
-        radius: size.width * 0.25,
-      ));
-    canvas.drawPath(centerCircle, gradientPaint);
-
-    // Add subtle wave effect
-    final wavePath = Path();
-    wavePath.moveTo(0, size.height * 0.7);
-
-    // Create curved wave path
-    var firstControlPoint = Offset(size.width * 0.25, size.height * 0.65);
-    var firstEndPoint = Offset(size.width * 0.5, size.height * 0.7);
-    wavePath.quadraticBezierTo(
-      firstControlPoint.dx,
-      firstControlPoint.dy,
-      firstEndPoint.dx,
-      firstEndPoint.dy,
-    );
-
-    var secondControlPoint = Offset(size.width * 0.75, size.height * 0.75);
-    var secondEndPoint = Offset(size.width, size.height * 0.7);
-    wavePath.quadraticBezierTo(
-      secondControlPoint.dx,
-      secondControlPoint.dy,
-      secondEndPoint.dx,
-      secondEndPoint.dy,
-    );
-
-    wavePath.lineTo(size.width, size.height);
-    wavePath.lineTo(0, size.height);
-    wavePath.close();
-
-    canvas.drawPath(
-      wavePath,
-      Paint()
-        ..shader = LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [mediumBlue.withOpacity(0.3), darkBlue.withOpacity(0.1)],
-        ).createShader(Rect.fromLTWH(0, 0, size.width, size.height)),
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 242, 249, 255),
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
+        centerTitle: true,
+        title: const Text(
+          'Registration Form',
+          style: TextStyle(
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: const Color(0xFF4A6CF7),
+      ),
+      body: Row(
+        children: [
+          Container(
+            width: 70,
+            alignment: Alignment.topCenter,
+            padding: const EdgeInsets.only(top: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildVerticalTab(Icons.person, "Personal", 0),
+                _buildVerticalTab(Icons.contact_mail, "Contact", 1),
+                _buildVerticalTab(Icons.details, "Additional", 2),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Form(
+              key: _formKey,
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildPersonalDetailsTab(),
+                  _buildContactDetailsTab(),
+                  _buildAdditionalDetailsTab(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.only(bottom: 44.0),
+        child: Center(
+          child: SizedBox(
+            height: 60,
+            width: 300,
+            child: ElevatedButton(
+              onPressed: _submitRegistration,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF4A6CF7),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(33),
+                ),
+              ),
+              child: const Text(
+                'Submit Registration',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
-class WaveBackground2 extends StatelessWidget {
-  const WaveBackground2({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: WavePainter2(),
-      child: Container(),
-    );
-  }
-}
-
-class WavePainter2 extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    // Define colors
-    final lightBlue = Color.fromARGB(255, 255, 252, 241);
-    final mediumBlue = Color.fromARGB(255, 255, 255, 255);
-    final darkBlue = Color.fromARGB(255, 255, 193, 24);
-
-    // Create gradient paint
-    final Paint gradientPaint = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [lightBlue, mediumBlue],
-      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
-
-    // Draw background
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.width, size.height),
-      Paint()..color = lightBlue,
-    );
-
-    // Draw top-left circle
-    final topLeftCircle = Path()
-      ..addOval(Rect.fromCircle(
-        center: Offset(size.width * 0.2, size.height * 0.2),
-        radius: size.width * 0.3,
-      ));
-    canvas.drawPath(
-      topLeftCircle,
-      Paint()
-        ..color = darkBlue.withOpacity(0.2)
-        ..style = PaintingStyle.fill,
-    );
-
-    // Draw bottom-right circle
-    final bottomRightCircle = Path()
-      ..addOval(Rect.fromCircle(
-        center: Offset(size.width * 0.8, size.height * 0.8),
-        radius: size.width * 0.3,
-      ));
-    canvas.drawPath(
-      bottomRightCircle,
-      Paint()
-        ..color = darkBlue.withOpacity(0.2)
-        ..style = PaintingStyle.fill,
-    );
-
-    // Draw center circle with gradient
-    final centerCircle = Path()
-      ..addOval(Rect.fromCircle(
-        center: Offset(size.width * 0.5, size.height * 0.4),
-        radius: size.width * 0.25,
-      ));
-    canvas.drawPath(centerCircle, gradientPaint);
-
-    // Add subtle wave effect
-    final wavePath = Path();
-    wavePath.moveTo(0, size.height * 0.7);
-
-    // Create curved wave path
-    var firstControlPoint = Offset(size.width * 0.25, size.height * 0.65);
-    var firstEndPoint = Offset(size.width * 0.5, size.height * 0.7);
-    wavePath.quadraticBezierTo(
-      firstControlPoint.dx,
-      firstControlPoint.dy,
-      firstEndPoint.dx,
-      firstEndPoint.dy,
-    );
-
-    var secondControlPoint = Offset(size.width * 0.75, size.height * 0.75);
-    var secondEndPoint = Offset(size.width, size.height * 0.7);
-    wavePath.quadraticBezierTo(
-      secondControlPoint.dx,
-      secondControlPoint.dy,
-      secondEndPoint.dx,
-      secondEndPoint.dy,
-    );
-
-    wavePath.lineTo(size.width, size.height);
-    wavePath.lineTo(0, size.height);
-    wavePath.close();
-
-    canvas.drawPath(
-      wavePath,
-      Paint()
-        ..shader = LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [mediumBlue.withOpacity(0.3), darkBlue.withOpacity(0.1)],
-        ).createShader(Rect.fromLTWH(0, 0, size.width, size.height)),
+  Widget _buildVerticalTab(IconData icon, String label, int index) {
+    return GestureDetector(
+      onTap: () {
+        _tabController.animateTo(index);
+      },
+      child: Container(
+        height: 60,
+        decoration: BoxDecoration(
+          color: _tabController.index == index
+              ? Colors.white
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(32),
+        ),
+        child: Center(
+          child: Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: _tabController.index == index
+                  ? Colors.white
+                  : Colors.transparent,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: _tabController.index == index
+                    ? Colors.white
+                    : Colors.transparent,
+                width: 2,
+              ),
+            ),
+            child: Center(
+              child: Icon(
+                icon,
+                size: 24,
+                color: _tabController.index == index
+                    ? const Color(0xFF4A6CF7)
+                    : const Color.fromARGB(255, 117, 117, 117),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
+  Widget _buildPersonalDetailsTab() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionTitle('Personal Information'),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _nameController,
+            labelText: 'Full Name',
+            prefixIcon: Icons.person,
+            focusNode: _nameFocusNode,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your full name';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _emailController,
+            labelText: 'Email Address',
+            prefixIcon: Icons.email,
+            keyboardType: TextInputType.emailAddress,
+            focusNode: _emailFocusNode,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your email';
+              }
+              final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+              if (!emailRegex.hasMatch(value)) {
+                return 'Please enter a valid email address';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _phoneController,
+            labelText: 'Phone Number',
+            prefixIcon: Icons.phone,
+            keyboardType: TextInputType.phone,
+            focusNode: _phoneFocusNode,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your phone number';
+              }
+              final phoneRegex = RegExp(r'^\d{10}$');
+              if (!phoneRegex.hasMatch(value)) {
+                return 'Please enter a valid 10-digit phone number';
+              }
+              return null;
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContactDetailsTab() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionTitle('Contact Details'),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _addressController,
+            labelText: 'Full Address',
+            prefixIcon: Icons.location_on,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your address';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _cityController,
+            labelText: 'City',
+            prefixIcon: Icons.location_city,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your city';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _stateController,
+            labelText: 'State',
+            prefixIcon: Icons.map,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your state';
+              }
+              return null;
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAdditionalDetailsTab() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionTitle('Additional Information'),
+          const SizedBox(height: 16),
+          _buildDropdownField(
+            value: _educationLevel,
+            labelText: 'Education Level',
+            items: const [
+              'High School',
+              'Graduate',
+              'Post Graduate',
+              'Professional Degree',
+            ],
+            onChanged: (value) {
+              setState(() {
+                _educationLevel = value;
+              });
+            },
+            validator: (value) {
+              if (value == null) {
+                return 'Please select an education level';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
+          _buildDropdownField(
+            value: _incomeRange,
+            labelText: 'Income Range',
+            items: const [
+              'Below 2,00,000',
+              '2,00,000 - 5,00,000',
+              '5,00,000 - 10,00,000',
+              'Above 10,00,000',
+            ],
+            onChanged: (value) {
+              setState(() {
+                _incomeRange = value;
+              });
+            },
+            validator: (value) {
+              if (value == null) {
+                return 'Please select an income range';
+              }
+              return null;
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+        fontFamily: 'Poppins',
+        fontSize: 22,
+        fontWeight: FontWeight.w600,
+        color: Color(0xFF4A6CF7),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    TextEditingController? controller,
+    required String labelText,
+    required IconData prefixIcon,
+    TextInputType keyboardType = TextInputType.text,
+    FocusNode? focusNode,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      focusNode: focusNode,
+      validator: validator,
+      decoration: InputDecoration(
+        labelText: labelText,
+        prefixIcon: Icon(prefixIcon, color: const Color(0xFF4A6CF7)),
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: Color(0xFF4A6CF7),
+            width: 2,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: Colors.red,
+            width: 2,
+          ),
+        ),
+        labelStyle: TextStyle(
+          fontFamily: 'Poppins',
+          color: Colors.grey[600],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdownField({
+    required String labelText,
+    required List<String> items,
+    String? value,
+    void Function(String?)? onChanged,
+    String? Function(String?)? validator,
+  }) {
+    return DropdownButtonFormField<String>(
+      value: value,
+      hint: Text('Select $labelText'),
+      decoration: InputDecoration(
+        labelText: labelText,
+        prefixIcon: const Icon(
+          Icons.arrow_drop_down_circle,
+          color: Color(0xFF4A6CF7),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: Colors.red,
+            width: 2,
+          ),
+        ),
+        labelStyle: TextStyle(
+          fontFamily: 'Poppins',
+          color: Colors.grey[600],
+        ),
+      ),
+      items: items
+          .map((item) => DropdownMenuItem(
+                value: item,
+                child: Text(
+                  item,
+                  style: const TextStyle(fontFamily: 'Poppins'),
+                ),
+              ))
+          .toList(),
+      onChanged: onChanged,
+      validator: validator,
+    );
+  }
 }
 
 class VendorRegistrationForm extends StatefulWidget {
@@ -1106,692 +785,310 @@ class VendorRegistrationForm extends StatefulWidget {
   _VendorRegistrationFormState createState() => _VendorRegistrationFormState();
 }
 
-class _VendorRegistrationFormState extends State<VendorRegistrationForm> {
+class _VendorRegistrationFormState extends State<VendorRegistrationForm>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  // Form Key
   final _formKey = GlobalKey<FormState>();
 
-  // Business Details Controllers
+  // Controllers for Vendor Details
   final TextEditingController _businessNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _gstController = TextEditingController();
   final TextEditingController _panController = TextEditingController();
-
-  // Business Contact Details Controllers
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
   final TextEditingController _stateController = TextEditingController();
   final TextEditingController _pinCodeController = TextEditingController();
 
-  // Additional Business Details Controllers
-  final TextEditingController _incorporationDateController =
-      TextEditingController();
-  final TextEditingController _businessTypeController = TextEditingController();
-  final TextEditingController _annualTurnoverController =
-      TextEditingController();
-
-  // Expansion state for sections
-  bool _isBusinessDetailsExpanded = true;
-  bool _isContactDetailsExpanded = false;
-  bool _isAdditionalDetailsExpanded = false;
-
-  // Business Type options
-  List<String> businessTypeOptions = [
-    'Sole Proprietorship',
-    'Partnership',
-    'Private Limited',
-    'Public Limited',
-    'LLP'
-  ];
-  String? selectedBusinessType;
-
-  // Annual Turnover options
-  List<String> annualTurnoverOptions = [
-    'Below 10,00,000',
-    '10,00,000 - 50,00,000',
-    '50,00,000 - 1,00,00,000',
-    'Above 1,00,00,000'
-  ];
-  String? selectedAnnualTurnover;
-
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MPINEntryPage()),
-            );
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.help,
-              color: Colors.white,
-            ),
-          )
-        ],
-        centerTitle: true,
-        title: Text(
-          'Vendor Registration',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.green,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Stack(
-          children: [
-            const WaveBackground3(),
-            Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 100.0),
-                child: ListView(
-                  children: [
-                    // Business Details Section
-                    _buildExpandableSection(
-                      title: 'Business Details',
-                      isExpanded: _isBusinessDetailsExpanded,
-                      onTap: () {
-                        setState(() {
-                          _isBusinessDetailsExpanded =
-                              !_isBusinessDetailsExpanded;
-                          // Close other sections
-                          _isContactDetailsExpanded = false;
-                          _isAdditionalDetailsExpanded = false;
-                        });
-                      },
-                      child: _buildBusinessDetailsForm(),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Contact Details Section
-                    _buildExpandableSection(
-                      title: 'Contact Details',
-                      isExpanded: _isContactDetailsExpanded,
-                      onTap: () {
-                        setState(() {
-                          _isContactDetailsExpanded =
-                              !_isContactDetailsExpanded;
-                          // Close other sections
-                          _isBusinessDetailsExpanded = false;
-                          _isAdditionalDetailsExpanded = false;
-                        });
-                      },
-                      child: _buildContactDetailsForm(),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Additional Details Section
-                    _buildExpandableSection(
-                      title: 'Additional Details',
-                      isExpanded: _isAdditionalDetailsExpanded,
-                      onTap: () {
-                        setState(() {
-                          _isAdditionalDetailsExpanded =
-                              !_isAdditionalDetailsExpanded;
-                          // Close other sections
-                          _isBusinessDetailsExpanded = false;
-                          _isContactDetailsExpanded = false;
-                        });
-                      },
-                      child: _buildAdditionalDetailsForm(),
-                    ),
-
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PaymentApp()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      child: Text(
-                        'Register',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // Expandable Section Widget (same as in customer registration)
-  Widget _buildExpandableSection({
-    required String title,
-    Color titleColor = Colors.green,
-    required bool isExpanded,
-    required VoidCallback onTap,
-    required Widget child,
-    Color color = Colors.green, // Default color to green
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
-      ),
-      child: Column(
-        children: [
-          ListTile(
-            title: Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: titleColor,
-              ),
-            ),
-            trailing: Icon(
-              isExpanded ? Icons.expand_less : Icons.expand_more,
-              color: Colors.green,
-            ),
-            onTap: onTap,
-          ),
-          if (isExpanded) child,
-        ],
-      ),
-    );
-  }
-
-  // Business Details Form
-  Widget _buildBusinessDetailsForm() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          _buildTextField(
-              controller: _businessNameController,
-              hintText: 'Business Name',
-              icon: Icons.business,
-              color: Colors.black),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _emailController,
-            hintText: 'Business Email',
-            icon: Icons.email,
-            color: Colors.black,
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _phoneController,
-            hintText: 'Business Phone Number',
-            icon: Icons.phone,
-            color: Colors.black,
-            keyboardType: TextInputType.phone,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _gstController,
-            color: Colors.black,
-            hintText: 'GST Number',
-            icon: Icons.numbers,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _panController,
-            color: Colors.black,
-            hintText: 'PAN Number',
-            icon: Icons.credit_card,
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Contact Details Form
-  Widget _buildContactDetailsForm() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          _buildTextField(
-            controller: _addressController,
-            hintText: 'Business Address',
-            icon: Icons.location_on,
-            color: Colors.black,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _cityController,
-            hintText: 'City',
-            icon: Icons.location_city,
-            color: Colors.black,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _stateController,
-            hintText: 'State',
-            icon: Icons.map,
-            color: Colors.black,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _pinCodeController,
-            hintText: 'PIN Code',
-            icon: Icons.post_add,
-            color: Colors.black,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Additional Details Form
-  Widget _buildAdditionalDetailsForm() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          _buildDateField(
-            controller: _incorporationDateController,
-            hintText: 'Incorporation Date',
-            icon: Icons.calendar_today,
-          ),
-          const SizedBox(height: 16),
-          _buildDropdownField(
-            value: selectedBusinessType,
-            hintText: 'Business Type',
-            icon: Icons.business_center,
-            items: businessTypeOptions,
-            onChanged: (value) {
-              setState(() {
-                selectedBusinessType = value;
-              });
-            },
-          ),
-          const SizedBox(height: 16),
-          _buildDropdownField(
-            value: selectedAnnualTurnover,
-            hintText: 'Annual Turnover',
-            icon: Icons.attach_money,
-            items: annualTurnoverOptions,
-            onChanged: (value) {
-              setState(() {
-                selectedAnnualTurnover = value;
-              });
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Reusable TextField Widget (same as in customer registration)
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String hintText,
-    required IconData icon,
-    TextInputType keyboardType = TextInputType.text,
-    List<TextInputFormatter>? inputFormatters,
-    required Color color,
-  }) {
-    return TextField(
-      controller: controller,
-      keyboardType: keyboardType,
-      inputFormatters: inputFormatters,
-      cursorColor: Colors.green,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyle(
-          color: const Color.fromARGB(255, 0, 0, 0),
-          fontSize: 16,
-        ),
-        prefixIcon: Icon(
-          icon,
-          color: const Color.fromARGB(255, 0, 0, 0),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        filled: true,
-        fillColor: const Color.fromARGB(255, 162, 255, 159),
-      ),
-    );
-  }
-
-  // Date Field Widget (same as in customer registration)
-  Widget _buildDateField({
-    required TextEditingController controller,
-    required String hintText,
-    required IconData icon,
-  }) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: Icon(icon),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        filled: true,
-        fillColor: Colors.white,
-      ),
-      readOnly: true,
-      onTap: () async {
-        DateTime? pickedDate = await showDatePicker(
-          context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime(1950),
-          lastDate: DateTime.now(),
-        );
-
-        if (pickedDate != null) {
-          setState(() {
-            controller.text =
-                "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-          });
-        }
-      },
-    );
-  }
-
-  // down Field Widget (same as in customer registration)
-  Widget _buildDropdownField({
-    required String? value,
-    required String hintText,
-    required IconData icon,
-    required List<String> items,
-    required void Function(String?) onChanged,
-  }) {
-    return DropdownButtonFormField<String>(
-      value: value,
-      decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: Icon(
-          icon,
-          color: const Color.fromARGB(255, 255, 255, 255),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        filled: true,
-        fillColor: const Color.fromARGB(255, 255, 255, 255),
-      ),
-      items: items
-          .map((item) => DropdownMenuItem(
-                value: item,
-                child: Text(item),
-              ))
-          .toList(),
-      onChanged: onChanged,
-    );
-  }
-
-  // Form Submission Method
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      // Validate and process form data
-      print('Business Details:');
-      print('Business Name: ${_businessNameController.text}');
-      print('Email: ${_emailController.text}');
-      print('Phone: ${_phoneController.text}');
-      print('GST Number: ${_gstController.text}');
-      print('PAN Number: ${_panController.text}');
-
-      print('\nContact Details:');
-      print('Address: ${_addressController.text}');
-      print('City: ${_cityController.text}');
-      print('State: ${_stateController.text}');
-      print('PIN Code: ${_pinCodeController.text}');
-
-      print('\nAdditional Details:');
-      print('Incorporation Date: ${_incorporationDateController.text}');
-      print('Business Type: $selectedBusinessType');
-      print('Annual Turnover: $selectedAnnualTurnover');
-
-      // Navigate to next screen or process registration
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Vendor Registration Submitted')),
-      );
-    }
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
   void dispose() {
-    // Dispose all controllers
+    _tabController.dispose();
     _businessNameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
     _gstController.dispose();
     _panController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
     _addressController.dispose();
     _cityController.dispose();
     _stateController.dispose();
     _pinCodeController.dispose();
-    _incorporationDateController.dispose();
     super.dispose();
   }
-}
-
-class WaveBackground3 extends StatelessWidget {
-  const WaveBackground3({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: WavePainter3(),
-      child: Container(),
-    );
-  }
-}
-
-class WavePainter3 extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    // Define colors
-    final lightBlue = Color.fromARGB(255, 241, 255, 241);
-    final mediumBlue = Color.fromARGB(255, 255, 255, 255);
-    final darkBlue = Color.fromARGB(255, 30, 255, 0);
-    // Create gradient paint
-    final Paint gradientPaint = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [lightBlue, mediumBlue],
-      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
-
-    // Draw background
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.width, size.height),
-      Paint()..color = lightBlue,
-    );
-
-    // Draw top-left circle
-    final topLeftCircle = Path()
-      ..addOval(Rect.fromCircle(
-        center: Offset(size.width * 0.2, size.height * 0.2),
-        radius: size.width * 0.3,
-      ));
-    canvas.drawPath(
-      topLeftCircle,
-      Paint()
-        ..color = darkBlue.withOpacity(0.2)
-        ..style = PaintingStyle.fill,
-    );
-
-    // Draw bottom-right circle
-    final bottomRightCircle = Path()
-      ..addOval(Rect.fromCircle(
-        center: Offset(size.width * 0.8, size.height * 0.8),
-        radius: size.width * 0.3,
-      ));
-    canvas.drawPath(
-      bottomRightCircle,
-      Paint()
-        ..color = darkBlue.withOpacity(0.2)
-        ..style = PaintingStyle.fill,
-    );
-
-    // Draw center circle with gradient
-    final centerCircle = Path()
-      ..addOval(Rect.fromCircle(
-        center: Offset(size.width * 0.5, size.height * 0.4),
-        radius: size.width * 0.25,
-      ));
-    canvas.drawPath(centerCircle, gradientPaint);
-
-    // Add subtle wave effect
-    final wavePath = Path();
-    wavePath.moveTo(0, size.height * 0.7);
-
-    // Create curved wave path
-    var firstControlPoint = Offset(size.width * 0.25, size.height * 0.65);
-    var firstEndPoint = Offset(size.width * 0.5, size.height * 0.7);
-    wavePath.quadraticBezierTo(
-      firstControlPoint.dx,
-      firstControlPoint.dy,
-      firstEndPoint.dx,
-      firstEndPoint.dy,
-    );
-
-    var secondControlPoint = Offset(size.width * 0.75, size.height * 0.75);
-    var secondEndPoint = Offset(size.width, size.height * 0.7);
-    wavePath.quadraticBezierTo(
-      secondControlPoint.dx,
-      secondControlPoint.dy,
-      secondEndPoint.dx,
-      secondEndPoint.dy,
-    );
-
-    wavePath.lineTo(size.width, size.height);
-    wavePath.lineTo(0, size.height);
-    wavePath.close();
-
-    canvas.drawPath(
-      wavePath,
-      Paint()
-        ..shader = LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [mediumBlue.withOpacity(0.3), darkBlue.withOpacity(0.1)],
-        ).createShader(Rect.fromLTWH(0, 0, size.width, size.height)),
-    );
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
-class WaveBackground extends StatelessWidget {
-  const WaveBackground({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      bottom: 0,
-      left: 0,
-      right: 0,
-      child: CustomPaint(
-        size: const Size(double.infinity, 300), // Adjust height as needed
-        painter: WavePainter(),
+    return Scaffold(
+      backgroundColor: const Color(0xFFF5F7F9),
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
+        centerTitle: true,
+        title: const Text(
+          'Vendor Registration Form',
+          style: TextStyle(
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 58, 182, 87),
+      ),
+      body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Vertical Tabs
+          SizedBox(
+            width: 70,
+            child: Column(
+              children: [
+                _buildVerticalTab(Icons.business, "Business", 0),
+                _buildVerticalTab(Icons.contact_mail, "Contact", 1),
+                _buildVerticalTab(Icons.details, "Details", 2),
+              ],
+            ),
+          ),
+          // Tab Content
+          Expanded(
+            child: Form(
+              key: _formKey,
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildBusinessDetailsTab(),
+                  _buildContactDetailsTab(),
+                  _buildAdditionalDetailsTab(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.only(bottom: 44.0),
+        child: SizedBox(
+          height: 60,
+          width: 300,
+          child: ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 58, 182, 87),
+              padding: EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(33),
+              ),
+            ),
+            child: Text(
+              'Submit Registration',
+              style: TextStyle(
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
-}
 
-class WavePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    // First wave
-    final paint1 = Paint()
-      ..color = primary.withOpacity(0.5)
-      ..style = PaintingStyle.fill;
-
-    final path1 = Path()
-      ..moveTo(0, size.height * 0.7)
-      ..quadraticBezierTo(
-        size.width * 0.25,
-        size.height * 0.55,
-        size.width * 0.5,
-        size.height * 0.7,
-      )
-      ..quadraticBezierTo(
-        size.width * 0.75,
-        size.height * 0.85,
-        size.width,
-        size.height * 0.7,
-      )
-      ..lineTo(size.width, size.height)
-      ..lineTo(0, size.height);
-
-    canvas.drawPath(path1, paint1);
-
-    // Second wave
-    final paint2 = Paint()
-      ..color = primary.withOpacity(0.5)
-      ..style = PaintingStyle.fill;
-
-    final path2 = Path()
-      ..moveTo(0, size.height * 0.8)
-      ..quadraticBezierTo(
-        size.width * 0.25,
-        size.height * 0.65,
-        size.width * 0.5,
-        size.height * 0.8,
-      )
-      ..quadraticBezierTo(
-        size.width * 0.75,
-        size.height * 0.95,
-        size.width,
-        size.height * 0.8,
-      )
-      ..lineTo(size.width, size.height)
-      ..lineTo(0, size.height);
-
-    canvas.drawPath(path2, paint2);
-
-    // Third wave
-    final paint3 = Paint()
-      ..color = primary.withOpacity(0.5)
-      ..style = PaintingStyle.fill;
-
-    final path3 = Path()
-      ..moveTo(0, size.height * 0.9)
-      ..quadraticBezierTo(
-        size.width * 0.25,
-        size.height * 0.75,
-        size.width * 0.5,
-        size.height * 0.9,
-      )
-      ..quadraticBezierTo(
-        size.width * 0.75,
-        size.height * 1.05,
-        size.width,
-        size.height * 0.9,
-      )
-      ..lineTo(size.width, size.height)
-      ..lineTo(0, size.height);
-
-    canvas.drawPath(path3, paint3);
+  // Vertical Tab
+  Widget _buildVerticalTab(IconData icon, String label, int index) {
+    return GestureDetector(
+      onTap: () {
+        _tabController.animateTo(index);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          height: 60,
+          decoration: BoxDecoration(
+              color: _tabController.index == index
+                  ? const Color.fromARGB(255, 255, 255,
+                      255) // Highlight active tab with background color
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(32)),
+          child: Center(
+            child: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: _tabController.index == index
+                    ? Colors.white
+                    : Colors.transparent, // Change circle color on active tab
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: _tabController.index == index
+                      ? Colors.white
+                      : Colors.transparent,
+                  width: 2,
+                ),
+              ),
+              child: Center(
+                child: Icon(
+                  icon,
+                  size: 24,
+                  color: _tabController.index == index
+                      ? const Color.fromARGB(255, 58, 182, 87)
+                      : const Color.fromARGB(255, 117, 117,
+                          117), // Change icon color for active tab
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
+  // Business Details Tab
+  Widget _buildBusinessDetailsTab() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionTitle('Business Information'),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _businessNameController,
+            labelText: 'Business Name',
+            prefixIcon: Icons.business,
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _gstController,
+            labelText: 'GST Number',
+            prefixIcon: Icons.receipt_long,
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _panController,
+            labelText: 'PAN Number',
+            prefixIcon: Icons.article,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Contact Details Tab
+  Widget _buildContactDetailsTab() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionTitle('Contact Details'),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _emailController,
+            labelText: 'Email Address',
+            prefixIcon: Icons.email,
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _phoneController,
+            labelText: 'Phone Number',
+            prefixIcon: Icons.phone,
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _addressController,
+            labelText: 'Address',
+            prefixIcon: Icons.location_on,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Additional Details Tab
+  Widget _buildAdditionalDetailsTab() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionTitle('Additional Information'),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _cityController,
+            labelText: 'City',
+            prefixIcon: Icons.location_city,
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _stateController,
+            labelText: 'State',
+            prefixIcon: Icons.map,
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _pinCodeController,
+            labelText: 'Pin Code',
+            prefixIcon: Icons.pin,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Reusable Section Title
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+        fontFamily: 'Poppins',
+        fontSize: 22,
+        fontWeight: FontWeight.w600,
+        color: const Color.fromARGB(255, 58, 182, 87),
+      ),
+    );
+  }
+
+  // Reusable Text Field
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String labelText,
+    required IconData prefixIcon,
+    TextInputType keyboardType = TextInputType.text,
+  }) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      decoration: InputDecoration(
+        labelText: labelText,
+        prefixIcon:
+            Icon(prefixIcon, color: const Color.fromARGB(255, 58, 182, 87)),
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: const Color.fromARGB(255, 58, 182, 87),
+            width: 2,
+          ),
+        ),
+        labelStyle: TextStyle(
+          fontFamily: 'Poppins',
+          color: Colors.grey[600],
+        ),
+      ),
+    );
+  }
 }
 
 class FranchiseeRegistrationForm extends StatefulWidget {
@@ -1800,441 +1097,301 @@ class FranchiseeRegistrationForm extends StatefulWidget {
       _FranchiseeRegistrationFormState();
 }
 
-class _FranchiseeRegistrationFormState
-    extends State<FranchiseeRegistrationForm> {
+class _FranchiseeRegistrationFormState extends State<FranchiseeRegistrationForm>
+    with SingleTickerProviderStateMixin {
+  // Tab Controller
+  late TabController _tabController;
+
+  // Form Key
   final _formKey = GlobalKey<FormState>();
 
-  // Personal Details Controllers
+  // Controllers for Franchisee Details
   final TextEditingController _franchiseeNameController =
       TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-
-  // Accounting Details Controllers
-  final TextEditingController _companyNameController = TextEditingController();
-  final TextEditingController _taxIdController = TextEditingController();
-  final TextEditingController _accountNumberController =
-      TextEditingController();
-
-  // Business Details Controllers
   final TextEditingController _businessNameController = TextEditingController();
-  final TextEditingController _businessAddressController =
-      TextEditingController();
-  final TextEditingController _businessPhoneController =
-      TextEditingController();
+  final TextEditingController _taxIdController = TextEditingController();
 
-  // Expansion state for sections
-  bool _isPersonalDetailsExpanded = true;
-  bool _isAccountingDetailsExpanded = false;
-  bool _isBusinessDetailsExpanded = false;
+  // Focus Nodes for Accessibility
+  final FocusNode _franchiseeNameFocusNode = FocusNode();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _phoneFocusNode = FocusNode();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => UserTypeSelection()),
-            );
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.help,
-              color: Colors.white,
-            ),
-          )
-        ],
-        centerTitle: true,
-        title: Text(
-          'Franchisee Registration',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.orange,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Stack(
-          children: [
-            const WaveBackground2(),
-            Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 100.0),
-                child: ListView(
-                  children: [
-                    // Personal Details Section
-                    _buildExpandableSection(
-                      title: 'Personal Details',
-                      isExpanded: _isPersonalDetailsExpanded,
-                      onTap: () {
-                        setState(() {
-                          _isPersonalDetailsExpanded =
-                              !_isPersonalDetailsExpanded;
-                          // Close other sections
-                          _isAccountingDetailsExpanded = false;
-                          _isBusinessDetailsExpanded = false;
-                        });
-                      },
-                      child: _buildPersonalDetailsForm(),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Accounting Details Section
-                    _buildExpandableSection(
-                      title: 'Accounting Details',
-                      isExpanded: _isAccountingDetailsExpanded,
-                      onTap: () {
-                        setState(() {
-                          _isAccountingDetailsExpanded =
-                              !_isAccountingDetailsExpanded;
-                          // Close other sections
-                          _isPersonalDetailsExpanded = false;
-                          _isBusinessDetailsExpanded = false;
-                        });
-                      },
-                      child: _buildAccountingDetailsForm(),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Business Details Section
-                    _buildExpandableSection(
-                      title: 'Business Details',
-                      isExpanded: _isBusinessDetailsExpanded,
-                      onTap: () {
-                        setState(() {
-                          _isBusinessDetailsExpanded =
-                              !_isBusinessDetailsExpanded;
-                          // Close other sections
-                          _isPersonalDetailsExpanded = false;
-                          _isAccountingDetailsExpanded = false;
-                        });
-                      },
-                      child: _buildBusinessDetailsForm(),
-                    ),
-
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: _submitForm,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      child: Text(
-                        'Register',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // Expandable Section Widget
-  Widget _buildExpandableSection({
-    required String title,
-    Color titleColor = Colors.orange,
-    required bool isExpanded,
-    required VoidCallback onTap,
-    required Widget child,
-    Color color = Colors.orange, // Default color to orange
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
-      ),
-      child: Column(
-        children: [
-          ListTile(
-            title: Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: titleColor,
-              ),
-            ),
-            trailing: Icon(
-              isExpanded ? Icons.expand_less : Icons.expand_more,
-              color: Colors.orange,
-            ),
-            onTap: onTap,
-          ),
-          if (isExpanded) child,
-        ],
-      ),
-    );
-  }
-
-  // Personal Details Form
-  Widget _buildPersonalDetailsForm() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          _buildTextField(
-            controller: _franchiseeNameController,
-            hintText: 'Franchisee Name',
-            color: Colors.black,
-            icon: Icons.person,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _emailController,
-            hintText: 'Email Address',
-            icon: Icons.email,
-            color: Colors.black,
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            controller: _phoneController,
-            hintText: 'Phone Number',
-            icon: Icons.phone,
-            color: Colors.black,
-            keyboardType: TextInputType.phone,
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-              controller: _addressController,
-              hintText: 'Personal Address',
-              icon: Icons.location_on,
-              color: Colors.black),
-        ],
-      ),
-    );
-  }
-
-  // Accounting Details Form
-  Widget _buildAccountingDetailsForm() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          _buildTextField(
-              controller: _companyNameController,
-              hintText: 'Company Name',
-              icon: Icons.business,
-              color: Colors.black),
-          const SizedBox(height: 16),
-          _buildTextField(
-              controller: _taxIdController,
-              hintText: 'Tax ID / GST Number',
-              icon: Icons.numbers,
-              color: Colors.black),
-          const SizedBox(height: 16),
-          _buildTextField(
-              controller: _accountNumberController,
-              hintText: 'Bank Account Number',
-              icon: Icons.account_balance,
-              keyboardType: TextInputType.number,
-              color: Colors.black),
-        ],
-      ),
-    );
-  }
-
-  // Business Details Form
-  Widget _buildBusinessDetailsForm() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          _buildTextField(
-              controller: _businessNameController,
-              hintText: 'Business Name',
-              icon: Icons.storefront,
-              color: Colors.black),
-          const SizedBox(height: 16),
-          _buildTextField(
-              controller: _businessAddressController,
-              hintText: 'Business Address',
-              icon: Icons.location_city,
-              color: Colors.black),
-          const SizedBox(height: 16),
-          _buildTextField(
-              controller: _businessPhoneController,
-              hintText: 'Business Phone Number',
-              icon: Icons.business,
-              keyboardType: TextInputType.phone,
-              color: Colors.black),
-        ],
-      ),
-    );
-  }
-
-  // Reusable TextField Widget
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String hintText,
-    required IconData icon,
-    required Color color,
-    TextInputType keyboardType = TextInputType.text,
-  }) {
-    return TextField(
-      controller: controller,
-      keyboardType: keyboardType,
-      cursorColor: const Color.fromARGB(255, 0, 0, 0),
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyle(
-          color: const Color.fromARGB(255, 0, 0, 0),
-          fontSize: 16,
-        ),
-        prefixIcon: Icon(
-          icon,
-          color: const Color.fromARGB(255, 0, 0, 0),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
-        ),
-        filled: true,
-        fillColor: const Color.fromARGB(255, 255, 255, 255),
-      ),
-    );
-  }
-
-  // Form Submission Method
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      // Validate and process form data
-      print('Personal Details:');
-      print('Name: ${_franchiseeNameController.text}');
-      print('Email: ${_emailController.text}');
-      print('Phone: ${_phoneController.text}');
-      print('Address: ${_addressController.text}');
-
-      print('\nAccounting Details:');
-      print('Company Name: ${_companyNameController.text}');
-      print('Tax ID: ${_taxIdController.text}');
-      print('Account Number: ${_accountNumberController.text}');
-
-      print('\nBusiness Details:');
-      print('Business Name: ${_businessNameController.text}');
-      print('Business Address: ${_businessAddressController.text}');
-      print('Business Phone: ${_businessPhoneController.text}');
-
-      // Navigate to Payment screen
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const PaymentApp()),
-      );
-
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Franchisee Registration Submitted')),
-      );
-    }
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
   void dispose() {
-    // Dispose all controllers
+    _tabController.dispose();
     _franchiseeNameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     _addressController.dispose();
-    _companyNameController.dispose();
-    _taxIdController.dispose();
-    _accountNumberController.dispose();
     _businessNameController.dispose();
-    _businessAddressController.dispose();
-    _businessPhoneController.dispose();
+    _taxIdController.dispose();
+    _franchiseeNameFocusNode.dispose();
+    _emailFocusNode.dispose();
+    _phoneFocusNode.dispose();
     super.dispose();
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF5F7F9),
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
+        centerTitle: true,
+        title: const Text(
+          'Franchis Registration',
+          style: TextStyle(
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 228, 160, 0),
+      ),
+      body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Sidebar Tabs
+          SizedBox(
+            width: 70,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 18.0, left: 6),
+              child: Column(
+                children: [
+                  _buildVerticalTab(Icons.person, "Personal", 0),
+                  _buildVerticalTab(Icons.business, "Business", 1),
+                  _buildVerticalTab(Icons.payment, "Tax Details", 2),
+                ],
+              ),
+            ),
+          ),
+          // Main Content Area
+          Expanded(
+            child: Form(
+              key: _formKey,
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildPersonalDetailsTab(),
+                  _buildBusinessDetailsTab(),
+                  _buildTaxDetailsTab(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.only(bottom: 44.0),
+        child: SizedBox(
+          height: 60,
+          width: 300,
+          child: ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 228, 160, 0),
+              padding: EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(33),
+              ),
+            ),
+            child: Text(
+              'Submit Registration',
+              style: TextStyle(
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Vertical Tab Builder
+  Widget _buildVerticalTab(IconData icon, String label, int index) {
+    return GestureDetector(
+      onTap: () {
+        _tabController.animateTo(index);
+      },
+      child: Container(
+        height: 60,
+        decoration: BoxDecoration(
+          color: _tabController.index == index
+              ? Color.fromARGB(255, 255, 255, 255)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(32),
+        ),
+        child: Center(
+          child: Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: _tabController.index == index
+                  ? Colors.white
+                  : Colors.transparent,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: _tabController.index == index
+                    ? Colors.white
+                    : Colors.transparent,
+                width: 2,
+              ),
+            ),
+            child: Center(
+              child: Icon(
+                icon,
+                size: 24,
+                color: _tabController.index == index
+                    ? const Color.fromARGB(255, 228, 160, 0)
+                    : Colors.grey,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Personal Details Tab
+  Widget _buildPersonalDetailsTab() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionTitle('Personal Information'),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _franchiseeNameController,
+            labelText: 'Franchis Name',
+            prefixIcon: Icons.person,
+            focusNode: _franchiseeNameFocusNode,
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _emailController,
+            labelText: 'Email Address',
+            prefixIcon: Icons.email,
+            keyboardType: TextInputType.emailAddress,
+            focusNode: _emailFocusNode,
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _phoneController,
+            labelText: 'Phone Number',
+            prefixIcon: Icons.phone,
+            keyboardType: TextInputType.phone,
+            focusNode: _phoneFocusNode,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Business Details Tab
+  Widget _buildBusinessDetailsTab() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionTitle('Business Information'),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _businessNameController,
+            labelText: 'Business Name',
+            prefixIcon: Icons.business,
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _addressController,
+            labelText: 'Business Address',
+            prefixIcon: Icons.location_on,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Tax Details Tab
+  Widget _buildTaxDetailsTab() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionTitle('Tax Information'),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _taxIdController,
+            labelText: 'Tax ID',
+            prefixIcon: Icons.payment,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Section Title
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+          fontFamily: 'Poppins',
+          fontSize: 22,
+          fontWeight: FontWeight.w600,
+          color: const Color.fromARGB(255, 228, 160, 0)),
+    );
+  }
+
+  // Reusable Text Field
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String labelText,
+    required IconData prefixIcon,
+    TextInputType keyboardType = TextInputType.text,
+    FocusNode? focusNode,
+  }) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      focusNode: focusNode,
+      decoration: InputDecoration(
+        labelText: labelText,
+        prefixIcon: Icon(
+          prefixIcon,
+          color: const Color.fromARGB(255, 228, 160, 0),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: const Color.fromARGB(255, 228, 160, 0),
+            width: 2,
+          ),
+        ),
+        labelStyle: TextStyle(
+          fontFamily: 'Poppins',
+          color: Colors.grey[600],
+        ),
+      ),
+    );
+  }
 }
-
-  // Widget _buildUserTypeCard(int index) {
-  //   final userType = _userTypes[index];
-  //   final isSelected = _selectedIndex == index;
-
-  //   return GestureDetector(
-  //     onTap: () {
-  //       setState(() {
-  //         _selectedIndex = index;
-  //       });
-  //       // Add your navigation or selection logic here
-  //     },
-  //     child: AnimatedContainer(
-  //       duration: const Duration(milliseconds: 300),
-  //       margin: const EdgeInsets.only(bottom: 16),
-  //       padding: const EdgeInsets.all(20),
-  //       decoration: BoxDecoration(
-  //         color: isSelected ? userType.backgroundColor : Colors.white,
-  //         borderRadius: BorderRadius.circular(16),
-  //         boxShadow: [
-  //           BoxShadow(
-  //             color: Colors.black.withOpacity(0.05),
-  //             blurRadius: 10,
-  //             offset: const Offset(0, 5),
-  //           ),
-  //         ],
-  //         border: Border.all(
-  //           color: isSelected ? userType.iconColor : Colors.grey.shade200,
-  //           width: 2,
-  //         ),
-  //       ),
-  //       child: Row(
-  //         children: [
-  //           Container(
-  //             padding: const EdgeInsets.all(12),
-  //             decoration: BoxDecoration(
-  //               color: isSelected
-  //                   ? userType.iconColor.withOpacity(0.2)
-  //                   : userType.backgroundColor.withOpacity(0.2),
-  //               borderRadius: BorderRadius.circular(12),
-  //             ),
-  //             child: Icon(
-  //               userType.icon,
-  //               color: userType.iconColor,
-  //               size: 28,
-  //             ),
-  //           ),
-  //           const SizedBox(width: 16),
-  //           Expanded(
-  //             child: Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 Text(
-  //                   userType.title,
-  //                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-  //                         fontWeight: FontWeight.bold,
-  //                       ),
-  //                 ),
-  //                 const SizedBox(height: 4),
-  //                 Text(
-  //                   userType.description,
-  //                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-  //                         color: Colors.grey[600],
-  //                       ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //           Icon(
-  //             Icons.chevron_right,
-  //             color: isSelected ? userType.iconColor : Colors.grey,
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }

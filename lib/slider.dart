@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:myapp/prime.dart';
+import 'package:myapp/others/prime.dart';
 import 'package:myapp/signup.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({Key? key}) : super(key: key);
+  const OnboardingScreen({super.key});
 
   @override
   _OnboardingScreenState createState() => _OnboardingScreenState();
@@ -31,7 +31,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   final List<Map<String, dynamic>> _contents = [
     {
       'title': 'Order',
-      'description': 'The best app for finance, banking, & e-wallet today',
+      'description':
+          'The best app for finance, banking, & e-wallet          today',
       'image': 'assets/logo/4676729-removebg-preview.png',
       'gradient': [
         Color.fromARGB(255, 255, 255, 255),
@@ -49,7 +50,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     },
     {
       'title': 'Fast Payment',
-      'description': 'Manage finances easily with secure payments',
+      'description': 'Manage finances easily with secure              payments',
       'image': 'assets/logo/6036950.jpg',
       'gradient': [
         Color.fromARGB(255, 255, 255, 255),
@@ -200,10 +201,11 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                           onPressed: () => Navigator.pushReplacement(
                             context,
                             PageRouteBuilder(
-                              pageBuilder: (context, animation, secondaryAnimation) =>
-                                  LoginScreen(),
-                              transitionsBuilder:
-                                  (context, animation, secondaryAnimation, child) {
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      LoginScreen(),
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
                                 return FadeTransition(
                                   opacity: animation,
                                   child: child,
@@ -216,7 +218,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                             'Skip',
                             style: TextStyle(
                               fontFamily: 'Nunito',
-                              color: Colors.white,
+                              color: primary,
                               fontSize: screenWidth * 0.045,
                               fontWeight: FontWeight.w500,
                             ),
@@ -302,7 +304,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                               ),
                             ),
                           ),
-                          SizedBox(height: screenHeight * 0.03),
 
                           // Next/Get Started Button
                           SizedBox(
@@ -324,15 +325,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                       pageBuilder: (context, animation,
                                               secondaryAnimation) =>
                                           LoginScreen(),
-                                      transitionsBuilder: (context, animation,
-                                          secondaryAnimation, child) {
-                                        return FadeTransition(
-                                          opacity: animation,
-                                          child: child,
-                                        );
-                                      },
-                                      transitionDuration:
-                                          Duration(milliseconds: 800),
                                     ),
                                   );
                                 } else {
@@ -353,6 +345,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                               ),
                             ),
                           ),
+                          SizedBox(height: screenHeight * 0.03),
                         ],
                       ),
                     ),
@@ -375,13 +368,13 @@ class OnboardingContent extends StatelessWidget {
   final double screenHeight;
 
   const OnboardingContent({
-    Key? key,
+    super.key,
     required this.title,
     required this.description,
     required this.image,
     required this.screenWidth,
     required this.screenHeight,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -393,11 +386,11 @@ class OnboardingContent extends StatelessWidget {
           Image.asset(
             image,
             height: screenHeight * 0.35,
-            width: screenWidth * 0.7,
+            width: screenWidth * 0.97,
             fit: BoxFit.contain,
           ),
           SizedBox(height: screenHeight * 0.03),
-          
+
           // Title and Description
           Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
@@ -420,7 +413,7 @@ class OnboardingContent extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: primary,
-                    fontSize: screenWidth * 0.90,
+                    fontSize: screenWidth * 0.07,
                     height: 1.5,
                     fontFamily: 'Nunito',
                   ),

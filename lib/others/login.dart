@@ -1,6 +1,9 @@
+// ignore_for_file: unused_import, use_super_parameters
+
 import 'package:flutter/material.dart';
-import 'package:myapp/accountacreate.dart';
-import 'package:myapp/step.dart';
+import 'package:myapp/account/accountacreate.dart';
+import 'package:myapp/mainpages/pin.dart';
+import 'package:myapp/mainpages/step.dart';
 
 
 class LoginScreen2 extends StatefulWidget {
@@ -137,7 +140,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MPINEntryPage()),
+            MaterialPageRoute(builder: (context) => PinInputScreen()),
           );
         },
         style: ElevatedButton.styleFrom(

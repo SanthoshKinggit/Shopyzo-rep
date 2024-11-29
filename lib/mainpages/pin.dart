@@ -1,6 +1,8 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:myapp/homepage.dart';
-import 'package:myapp/prime.dart';
+import 'package:myapp/others/prime.dart';
 
 class PinInputScreen extends StatefulWidget {
   @override
@@ -8,9 +10,6 @@ class PinInputScreen extends StatefulWidget {
 }
 
 class _PinInputScreenState extends State<PinInputScreen> {
-  final _pinController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +45,7 @@ class _PinInputScreenState extends State<PinInputScreen> {
               ),
               SizedBox(height: 10),
               Text(
-                'Secure your account with a 6-digit PIN',
+                'Secure your account with a 4-digit PIN',
                 style: TextStyle(
                   fontSize: 16,
                   fontFamily: 'Nunito',
@@ -56,10 +55,10 @@ class _PinInputScreenState extends State<PinInputScreen> {
               ),
               const SizedBox(height: 40),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(6, (index) {
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(4, (index) {
                   return Container(
-                    width: 50,
+                    width: 55,
                     height: 60,
                     margin: const EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
@@ -103,7 +102,7 @@ class _PinInputScreenState extends State<PinInputScreen> {
                   );
                 }),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 60),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(context,

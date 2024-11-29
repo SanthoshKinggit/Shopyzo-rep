@@ -5,19 +5,19 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:myapp/banking.dart';
-import 'package:myapp/choosemember.dart';
-import 'package:myapp/createac.dart';
-import 'package:myapp/edit.dart';
-import 'package:myapp/history.dart';
-import 'package:myapp/person.dart';
-import 'package:myapp/plan.dart';
-import 'package:myapp/prime.dart';
-import 'package:myapp/profile.dart';
-import 'package:myapp/profileedit.dart';
-import 'package:myapp/qrcode.dart';
-import 'package:myapp/qrscan.dart';
-import 'package:myapp/sevices.dart';
+import 'package:myapp/others/banking.dart';
+import 'package:myapp/others/choosemember.dart';
+import 'package:myapp/account/createac.dart';
+import 'package:myapp/others/edit.dart';
+import 'package:myapp/pages/history.dart';
+import 'package:myapp/log.dart';
+import 'package:myapp/mainpages/plan.dart';
+import 'package:myapp/others/prime.dart';
+import 'package:myapp/others/profile.dart';
+import 'package:myapp/others/profileedit.dart';
+import 'package:myapp/mainpages/qrcode.dart';
+import 'package:myapp/mainpages/qrscan.dart';
+import 'package:myapp/mainpages/sevices.dart';
 import 'package:myapp/usertype.dart';
 
 class PaymentApp extends StatefulWidget {
@@ -270,8 +270,9 @@ class _PaymentAppState extends State<PaymentApp> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(50),
                             child: Image.asset(
-                              'assets/logo/cropped_image.png',
-                              fit: BoxFit.cover,
+                              'assets/logo/WhatsApp_Image_2024-11-28_at_11.08.12_AM__1_-removebg-preview (1).png',
+                              height: 70,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),
@@ -428,8 +429,8 @@ class _PaymentAppState extends State<PaymentApp> {
                           _scaffoldKey.currentState?.openDrawer();
                         },
                         child: Image.asset(
-                          'assets/logo/cropped_image.png',
-                          height: 30,
+                          'assets/logo/WhatsApp_Image_2024-11-28_at_11.08.12_AM__1_-removebg-preview (1).png',
+                          height: 50,
                         ),
                       ),
                       Row(
@@ -438,7 +439,7 @@ class _PaymentAppState extends State<PaymentApp> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                '  Andrew Ainsley                                      ',
+                                '  Andrew Ainsley  ',
                                 style: TextStyle(
                                   fontFamily: 'Nunito',
                                   fontWeight: FontWeight.bold,
@@ -530,7 +531,7 @@ class _PaymentAppState extends State<PaymentApp> {
                                         ),
                                       ),
                                       Text(
-                                        '                   Andrew Ainsley\n                    **** **** 5575',
+                                        '                   Andrew Ainsley\n                  ',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: 'Nunito',
@@ -596,7 +597,7 @@ class _PaymentAppState extends State<PaymentApp> {
                                         ),
                                       ),
                                       Text(
-                                        '                   Andrew Ainsley\n                    **** **** 5575',
+                                        '                   Andrew Ainsley\n                    ',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: 'Nunito',
@@ -684,19 +685,31 @@ class _PaymentAppState extends State<PaymentApp> {
                               'Electricity',
                               Colors.amber,
                             ),
-                            _buildServiceItem(Icons.wifi, 'Internet', primary),
+                            _buildServiceItem(Icons.wifi, 'Internet',
+                                const Color.fromARGB(255, 0, 203, 34)),
                             _buildServiceItem(
-                                Icons.water_drop, 'Water',Colors.blue,),
-                            _buildServiceItem(Icons.account_balance_wallet,
-                                'E-Wallet', primary),
+                              Icons.water_drop,
+                              'Water',
+                              Colors.blue,
+                            ),
                             _buildServiceItem(
-                                Icons.security, 'Assurance', Colors.blue,),
+                                Icons.account_balance_wallet,
+                                'E-Wallet',
+                                const Color.fromARGB(255, 0, 190, 175)),
                             _buildServiceItem(
-                                Icons.shopping_bag, 'Shopping', Colors.purple,),
+                              Icons.security,
+                              'Assurance',
+                              const Color.fromARGB(255, 18, 64, 200),
+                            ),
                             _buildServiceItem(
-                                Icons.local_offer, 'Deals', primary),
-                            _buildServiceItem(
-                                Icons.favorite, 'Health', primary),
+                              Icons.shopping_bag,
+                              'Shopping',
+                              const Color.fromARGB(255, 147, 0, 167),
+                            ),
+                            _buildServiceItem(Icons.local_offer, 'Deals',
+                                const Color.fromARGB(255, 216, 223, 0)),
+                            _buildServiceItem(Icons.favorite, 'Health',
+                                const Color.fromARGB(255, 222, 0, 118)),
                           ],
                         ),
                       ),
@@ -741,24 +754,42 @@ class _PaymentAppState extends State<PaymentApp> {
                           crossAxisCount: 4,
                           children: [
                             _buildServiceItem(
-                                Icons.flash_on, 'Electricity', primary),
+                              Icons.flash_on,
+                              'Electricity',
+                              const Color.fromARGB(255, 0, 56, 169),
+                            ),
+                            _buildServiceItem(Icons.wifi, 'Internet',
+                                const Color.fromARGB(255, 0, 203, 34)),
                             _buildServiceItem(
-                              Icons.wifi,
-                              'Internet',
-                              primary,
+                              Icons.flash_on,
+                              'Electricity',
+                              Colors.amber,
+                            ),
+                            _buildServiceItem(Icons.wifi, 'Internet',
+                                const Color.fromARGB(255, 15, 219, 255)),
+                            _buildServiceItem(
+                              Icons.water_drop,
+                              'Water',
+                              Colors.blue,
                             ),
                             _buildServiceItem(
-                                Icons.water_drop, 'Water', primary),
-                            _buildServiceItem(Icons.account_balance_wallet,
-                                'E-Wallet', primary),
+                                Icons.account_balance_wallet,
+                                'E-Wallet',
+                                const Color.fromARGB(255, 0, 190, 175)),
                             _buildServiceItem(
-                                Icons.security, 'Assurance', primary),
+                              Icons.security,
+                              'Assurance',
+                              const Color.fromARGB(255, 18, 64, 200),
+                            ),
                             _buildServiceItem(
-                                Icons.shopping_bag, 'Shopping', primary),
-                            _buildServiceItem(
-                                Icons.local_offer, 'Deals', primary),
-                            _buildServiceItem(
-                                Icons.favorite, 'Health', primary),
+                              Icons.shopping_bag,
+                              'Shopping',
+                              const Color.fromARGB(255, 147, 0, 167),
+                            ),
+                            _buildServiceItem(Icons.local_offer, 'Deals',
+                                const Color.fromARGB(255, 216, 223, 0)),
+                            _buildServiceItem(Icons.favorite, 'Health',
+                                const Color.fromARGB(255, 222, 0, 118)),
                           ],
                         ),
                       ),

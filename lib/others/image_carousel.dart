@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:myapp/homepage.dart';
-import 'package:myapp/prime.dart';
+import 'package:myapp/others/prime.dart';
 
 abstract class _PaymentAppState extends State<PaymentApp> {
   late PageController _pageController;

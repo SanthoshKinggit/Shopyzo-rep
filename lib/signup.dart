@@ -1,8 +1,10 @@
+// ignore_for_file: unused_import, use_super_parameters
+
 import 'package:flutter/material.dart';
-import 'package:myapp/accountacreate.dart';
-import 'package:myapp/createac.dart';
-import 'package:myapp/login.dart';
-import 'package:myapp/prime.dart';
+import 'package:myapp/account/accountacreate.dart';
+import 'package:myapp/account/createac.dart';
+import 'package:myapp/others/login.dart';
+import 'package:myapp/others/prime.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -20,165 +22,166 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: screenHeight,
-              minWidth: screenWidth,
-            ),
-            child: IntrinsicHeight(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.06, // Responsive horizontal padding
-                  vertical: screenHeight * 0.02, // Responsive vertical padding
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Back Button
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: IconButton(
-                        icon: Icon(Icons.arrow_back_ios),
-                        onPressed: () => Navigator.pop(context),
-                      ),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: screenHeight,
+            minWidth: screenWidth,
+          ),
+          child: IntrinsicHeight(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.06, // Responsive horizontal padding
+                vertical: screenHeight * 0.00, // Responsive vertical padding
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Back Button
+
+                  // Logo
+
+                  Image.asset(
+                    'assets/logo/6333204.jpg',
+                    height: screenHeight * 0.25,
+                    width: screenWidth * 0.8,
+                    fit: BoxFit.contain,
+                  ),
+
+                  SizedBox(height: screenHeight * 0.04),
+
+                  // Title
+                  Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      fontFamily: 'Nunito',
+                      fontSize: screenWidth * 0.07,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
+                  ),
 
-                    // Logo
-                    SizedBox(height: screenHeight * 0.02),
-                    Image.asset(
-                      'assets/logo/6333204.jpg',
-                      height: screenHeight * 0.25,
-                      width: screenWidth * 0.5,
-                      fit: BoxFit.contain,
-                    ),
+                  SizedBox(height: screenHeight * 0.04),
 
-                    SizedBox(height: screenHeight * 0.03),
+                  // Social Login Buttons
+                  _buildSocialLoginButton(
+                    context,
+                    'https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png',
+                    'Continue with Facebook',
+                    isNetwork: true,
+                  ),
 
-                    // Title
-                    Text(
-                      'Sign Up',
-                      style: TextStyle(
-                        fontFamily: 'Nunito',
-                        fontSize: screenWidth * 0.07,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
+                  SizedBox(height: screenHeight * 0.01),
 
-                    SizedBox(height: screenHeight * 0.03),
+                  _buildSocialLoginButton(
+                    context,
+                    'assets/logo/Google_Icons-09-512.webp',
+                    'Continue with Google',
+                  ),
 
-                    // Social Login Buttons
-                    _buildSocialLoginButton(
-                      context, 
-                      'https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png', 
-                      'Continue with Facebook',
-                      isNetwork: true,
-                    ),
+                  SizedBox(height: screenHeight * 0.01),
 
-                    SizedBox(height: screenHeight * 0.01),
+                  _buildSocialLoginButton(
+                    context,
+                    'assets/logo/apple-logo-transparent.png',
+                    'Continue with Apple',
+                  ),
 
-                    _buildSocialLoginButton(
-                      context, 
-                      'assets/logo/Google_Icons-09-512.webp', 
-                      'Continue with Google',
-                    ),
+                  SizedBox(height: screenHeight * 0.04),
 
-                    SizedBox(height: screenHeight * 0.01),
-
-                    _buildSocialLoginButton(
-                      context, 
-                      'assets/logo/apple-logo-transparent.png', 
-                      'Continue with Apple',
-                    ),
-
-                    SizedBox(height: screenHeight * 0.02),
-
-                    // Divider
-                    Row(
-                      children: [
-                        Expanded(child: Divider(color: Colors.grey)),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-                          child: Text(
-                            'or',
-                            style: TextStyle(
-                              fontFamily: 'Nunito',
-                              fontSize: screenWidth * 0.04,
-                              fontWeight: FontWeight.w500,
-                            ),
+                  // Divider
+                  Row(
+                    children: [
+                      Expanded(child: Divider(color: Colors.grey)),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.03),
+                        child: Text(
+                          'or',
+                          style: TextStyle(
+                            fontFamily: 'Nunito',
+                            fontSize: screenWidth * 0.04,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                        Expanded(child: Divider(color: Colors.grey)),
-                      ],
-                    ),
-
-                    SizedBox(height: screenHeight * 0.02),
-
-                    // Sign In Button
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const Homepage1()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: primary,
-                        minimumSize: Size(screenWidth * 0.9, screenHeight * 0.07),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(33),
-                        ),
-                        elevation: 0,
                       ),
-                      child: Text(
-                        'Sign In',
+                      Expanded(child: Divider(color: Colors.grey)),
+                    ],
+                  ),
+
+                  SizedBox(height: screenHeight * 0.03),
+
+                  // Sign In Button
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Homepage1()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primary,
+                      minimumSize: Size(screenWidth * 0.9, screenHeight * 0.07),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(33),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: Text(
+                      'Sign In',
+                      style: TextStyle(
+                        fontFamily: 'Nunito',
+                        fontSize: screenWidth * 0.045,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: screenHeight * 0.01),
+
+                  // Sign Up Text
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Don\'t have an account?',
                         style: TextStyle(
                           fontFamily: 'Nunito',
-                          fontSize: screenWidth * 0.045,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          fontSize: screenWidth * 0.035,
+                          color: Colors.black,
                         ),
                       ),
-                    ),
-
-                    SizedBox(height: screenHeight * 0.02),
-
-                    // Sign Up Text
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Don\'t have an account?',
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Homepage1()),
+                          );
+                        },
+                        child: Text(
+                          'Sign up',
                           style: TextStyle(
                             fontFamily: 'Nunito',
                             fontSize: screenWidth * 0.035,
-                            color: Colors.black,
+                            color: primary,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Homepage1()),
-                            );
-                          },
-                          child: Text(
-                            'Sign up',
-                            style: TextStyle(
-                              fontFamily: 'Nunito',
-                              fontSize: screenWidth * 0.035,
-                              color: primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
@@ -189,11 +192,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // Helper method to build social login buttons
   Widget _buildSocialLoginButton(
-    BuildContext context, 
-    String imagePath, 
-    String text, 
-    {bool isNetwork = false}
-  ) {
+      BuildContext context, String imagePath, String text,
+      {bool isNetwork = false}) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -215,9 +215,9 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          isNetwork 
-            ? Image.network(imagePath, height: screenHeight * 0.035)
-            : Image.asset(imagePath, height: screenHeight * 0.035),
+          isNetwork
+              ? Image.network(imagePath, height: screenHeight * 0.035)
+              : Image.asset(imagePath, height: screenHeight * 0.035),
           SizedBox(width: screenWidth * 0.03),
           Text(
             text,

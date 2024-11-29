@@ -1,11 +1,13 @@
-// ignore_for_file: prefer_const_constructors, unused_element
+// ignore_for_file: prefer_const_constructors, unused_element, unused_import
 
 import 'package:flutter/material.dart';
-import 'package:myapp/forgot.dart';
-import 'package:myapp/pin.dart';
-import 'package:myapp/prime.dart';
-import 'package:myapp/profile.dart';
-import 'package:myapp/step.dart';
+import 'package:myapp/others/forgot.dart';
+import 'package:myapp/indicator.dart';
+import 'package:myapp/pass.dart';
+import 'package:myapp/mainpages/pin.dart';
+import 'package:myapp/others/prime.dart';
+import 'package:myapp/others/profile.dart';
+import 'package:myapp/mainpages/step.dart';
 
 class Homepage0 extends StatefulWidget {
   const Homepage0({super.key});
@@ -31,122 +33,92 @@ class _Homepage0State extends State<Homepage0> {
 
   @override
   Widget build(BuildContext context) {
+    // Get the screen size
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = MediaQuery.of(context).size.width * 0.90;
+    final screenHeight = MediaQuery.of(context).size.height * 0.90;
+
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 14.0, top: 8),
-          child: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back_ios),
-          ),
-        ),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            padding: EdgeInsets.symmetric(
+              horizontal: screenWidth * 0.06, // Responsive horizontal padding
+              // Responsive vertical padding
+            ),
             child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(
-                    height: 30,
-                  ),
+                  SizedBox(height: screenHeight * 0.03),
 
-                  const SizedBox(
-                    height: 40,
-                  ),
+                  // Back Button
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        'Login to\nAccount',
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Nunito',
-                          height: 1.2,
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_back_ios),
+                          onPressed: () => Navigator.pop(context),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: screenHeight * 0.03),
+
+                  // Title
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Login to\nAccount',
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.08,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Nunito',
+                        height: 1.2,
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: screenHeight * 0.05),
                   // Email TextField
-                  TextField(
+                  _buildTextField(
                     controller: _emailController,
-                    cursorColor: const Color.fromARGB(255, 0, 0, 0),
+                    hintText: 'Email',
+                    prefixIcon: Icons.email_outlined,
                     keyboardType: TextInputType.emailAddress,
-                    onChanged: (value) {
-                      setState(() {}); // Rebuild to show any validation
-                    },
-                    decoration: InputDecoration(
-                      hintText: 'Email',
-                      hintStyle: TextStyle(
-                        color: Colors.grey[400],
-                        fontFamily: 'Nunito',
-                        fontSize: 16,
-                      ),
-                      prefixIcon: Icon(
-                        Icons.email_outlined,
-                        color: Colors.grey[500],
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[100],
-                      // Add error handling
-                      errorText: _isEmailValid(_emailController.text)
-                          ? null
-                          : 'Enter a valid email',
-                    ),
+                    validator: _isEmailValid,
+                    screenWidth: screenWidth,
                   ),
-                  const SizedBox(height: 16),
+
+                  SizedBox(height: screenHeight * 0.04),
+
                   // Password TextField
-                  TextField(
+                  _buildTextField(
                     controller: _passwordController,
+                    hintText: 'Password',
+                    prefixIcon: Icons.lock_outline,
                     obscureText: !_isPasswordVisible,
-                    decoration: InputDecoration(
-                      hintText: 'Password',
-                      hintStyle: TextStyle(
-                        fontFamily: 'Nunito',
-                        color: Colors.grey[400],
-                        fontSize: 16,
-                      ),
-                      prefixIcon: Icon(
-                        Icons.lock_outline,
+                    validator: _isPasswordValid,
+                    screenWidth: screenWidth,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
                         color: Colors.grey[500],
                       ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isPasswordVisible
-                              ? Icons.visibility_outlined
-                              : Icons.visibility_off_outlined,
-                          color: Colors.grey[500],
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[100],
-                      // Add error handling
-                      errorText: _isPasswordValid(_passwordController.text)
-                          ? null
-                          : 'Password must be at least 6 characters',
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
                     ),
                   ),
-                  const SizedBox(height: 16),
+
+                  SizedBox(height: screenHeight * 0.03),
+
                   // Remember me checkbox
                   Row(
                     children: [
@@ -158,7 +130,7 @@ class _Homepage0State extends State<Homepage0> {
                           });
                         },
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(33),
                         ),
                         side: BorderSide(color: Colors.grey[500]!),
                       ),
@@ -167,25 +139,28 @@ class _Homepage0State extends State<Homepage0> {
                         style: TextStyle(
                           fontFamily: 'Nunito',
                           color: Colors.grey[600],
-                          fontSize: 14,
+                          fontSize: screenWidth * 0.035,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+
+                  SizedBox(height: screenHeight * 0.04),
+
                   // Sign up button
                   SizedBox(
                     width: double.infinity,
-                    height: 56,
+                    height: screenHeight * 0.07,
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>  PinInputScreen()),
-                        );
+                      onPressed: ()  
+                      { 
+                      Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) => SetFingerprintScreen()),
+    );
+                      
+                      
                         final snackBar = SnackBar(
-                          content: Center(child: Text('Sign Up Completed')),
+                          content: Center(child: Text('Login Successful')),
                           backgroundColor: primary, // Background color
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
@@ -222,13 +197,14 @@ class _Homepage0State extends State<Homepage0> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: screenHeight * 0.02),
+
                   TextButton(
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ForgotPasswordScreen()),
+                              builder: (context) => PinInputScreen()),
                         );
                       },
                       child: Text(
@@ -236,35 +212,35 @@ class _Homepage0State extends State<Homepage0> {
                         style: TextStyle(
                           fontFamily: 'Nunito',
                           color: primary,
-                          fontSize: 14,
+                          fontSize: screenSize.width * 0.035,
                         ),
                       )),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 22),
                   Center(
                     child: Text(
                       'or continue with',
                       style: TextStyle(
                         fontFamily: 'Nunito',
-                        color: const Color.fromARGB(255, 55, 55, 55),
-                        fontSize: 14,
+                        color: const Color.fromARGB(255, 85, 85, 85),
+                        fontSize: screenSize.width * 0.035,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 22),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Image.network(
                         'https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png',
-                        height: 25,
+                        height: screenSize.width * 0.063,
                       ),
                       Image.asset(
                         'assets/logo/Google_Icons-09-512.webp',
-                        height: 40,
+                        height: screenSize.width * 0.1,
                       ),
                       Image.asset(
                         'assets/logo/apple-logo-transparent.png',
-                        height: 32,
+                        height: screenSize.width * 0.08,
                       ),
                     ],
                   ),
@@ -281,7 +257,7 @@ class _Homepage0State extends State<Homepage0> {
                           style: TextStyle(
                             fontFamily: 'Nunito',
                             color: Colors.grey[600],
-                            fontSize: 14,
+                            fontSize: screenSize.width * 0.035,
                           ),
                           children: const [
                             TextSpan(
@@ -303,6 +279,47 @@ class _Homepage0State extends State<Homepage0> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hintText,
+    required IconData prefixIcon,
+    required bool Function(String) validator,
+    required double screenWidth,
+    TextInputType keyboardType = TextInputType.text,
+    bool obscureText = false,
+    Widget? suffixIcon,
+  }) {
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      cursorColor: Colors.black,
+      onChanged: (value) {
+        setState(() {}); // Rebuild to show validation
+      },
+      decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: TextStyle(
+          color: Colors.grey[400],
+          fontFamily: 'Nunito',
+          fontSize: screenWidth * 0.04,
+        ),
+        prefixIcon: Icon(
+          prefixIcon,
+          color: Colors.grey[500],
+        ),
+        suffixIcon: suffixIcon,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(33),
+          borderSide: BorderSide.none,
+        ),
+        filled: true,
+        fillColor: const Color.fromARGB(255, 255, 255, 255),
+        // errorText: validator(controller.text) ? null : _getErrorText(hintText),
       ),
     );
   }

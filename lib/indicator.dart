@@ -1,390 +1,546 @@
-// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, sort_child_properties_last
+// ignore_for_file: use_key_in_widget_constructors, no_leading_underscores_for_local_identifiers, unused_element, use_super_parameters
 
+import 'dart:async';
+
+import 'package:country_code_picker/country_code_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:myapp/log.dart';
+import 'package:myapp/pass.dart';
+import 'package:myapp/others/prime.dart';
 
-class UserTypeCarousel extends StatefulWidget {
+class AlertBoxScreen extends StatefulWidget {
   @override
-  _UserTypeCarouselState createState() => _UserTypeCarouselState();
+  State<AlertBoxScreen> createState() => _AlertBoxScreenState();
 }
 
-class _UserTypeCarouselState extends State<UserTypeCarousel> {
-  int _currentIndex = 0;
-  final CarouselController _carouselController = CarouselController();
+class _AlertBoxScreenState extends State<AlertBoxScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
 
-  final List<UserTypeData> userTypes = [
-    UserTypeData(
-      title: 'Customer',
-      description: 'Shop with ease and secure payments',
-      color: Colors.blue,
-      icon: Icons.person_outline,
-      features: [
-        'Secure Payment Gateway',
-        'Order Tracking',
-        'Exclusive Deals',
-        'Digital Wallet'
-      ],
-      paymentMethods: [
-        'Credit/Debit Cards',
-        'UPI',
-        'Net Banking',
-        'Digital Wallets'
-      ],
-    ),
-    UserTypeData(
-      title: 'Vendor',
-      description: 'Manage your business efficiently',
-      color: Colors.green,
-      icon: Icons.store,
-      features: [
-        'Sales Analytics',
-        'Inventory Management',
-        'Multiple Payment Options',
-        'Business Insights'
-      ],
-      paymentMethods: [
-        'Bank Transfer',
-        'Payment Gateway',
-        'Business Cards',
-        'International Payments'
-      ],
-    ),
-    UserTypeData(
-      title: 'Franchisee',
-      description: 'Expand your business network',
-      color: Colors.purple,
-      icon: Icons.admin_panel_settings,
-      features: [
-        'Multi-location Management',
-        'Revenue Sharing',
-        'Centralized Billing',
-        'Financial Reports'
-      ],
-      paymentMethods: [
-        'Corporate Banking',
-        'Business Loans',
-        'Franchise Fees',
-        'Revenue Distribution'
-      ],
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    // Create an animation controller for the dots
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 800),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  final _formKey = GlobalKey<FormState>();
+  String? _imageUrl;
+  String? _fullName;
+  String? _nickname;
+  String? _email;
+  String _countryCode = '+1';
+  String? _phoneNumber;
+  DateTime? _selectedDate;
+
+  Future<void> _openCalendar(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      setState(() {
+        _imageUrl = image.path;
+      });
+    }
+  }
+
+  void _handleSubmit() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    // Get the screen size
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    // Responsive sizing
+    double profileImageSize = screenWidth * 0.25; // 25% of screen width
+    double spacingFactor =
+        screenHeight * 0.02; // 2% of screen height for spacing
+
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            // Custom AppBar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back_ios),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                  const Text(
-                    'Choose Your Role',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.help_outline),
-                    onPressed: () {
-                      // Show help dialog
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            // Carousel Slider
-            CarouselSlider(
-              // carouselController: _carouselController,
-              options: CarouselOptions(
-                height: MediaQuery.of(context).size.height * 0.7,
-                viewportFraction: 0.85,
-                enlargeCenterPage: true,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
-              ),
-              items: userTypes.map((userType) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return _buildUserTypeCard(userType);
-                  },
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 20),
-            // Carousel Indicators
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: userTypes.asMap().entries.map((entry) {
-                return GestureDetector(
-                  onTap: () => _carouselController.animateToPage(entry.key),
-                  child: Container(
-                    width: 12.0,
-                    height: 12.0,
-                    margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: userTypes[_currentIndex].color.withOpacity(
-                        _currentIndex == entry.key ? 0.9 : 0.4,
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-          ],
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        
+        title: Text(
+          'Fill Your Profile',
+          style: TextStyle(
+            fontSize: screenWidth * 0.06, // Responsive font size
+            fontFamily: 'Nunito',
+            fontWeight: FontWeight.bold,
+            color: const Color.fromARGB(255, 0, 0, 0),
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: const Color.fromARGB(255, 0, 0, 0),
+            size: screenWidth * 0.05, // Responsive icon size
+          ),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            padding: EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.05, vertical: screenHeight * 0.02),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: constraints.maxWidth,
+              ),
+              child: IntrinsicHeight(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Profile Image
+                      Center(
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: profileImageSize,
+                              height: profileImageSize,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                shape: BoxShape.circle,
+                              ),
+                              child: _imageUrl != null
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: Image.asset(
+                                        _imageUrl!,
+                                        fit: BoxFit.cover,
+                                        width: profileImageSize,
+                                        height: profileImageSize,
+                                      ),
+                                    )
+                                  : Icon(Icons.person,
+                                      size: profileImageSize * 0.5,
+                                      color: Colors.grey),
+                            ),
+                            Positioned(
+                              right: 0,
+                              bottom: 0,
+                              child: GestureDetector(
+                                onTap: _pickImage,
+                                child: Container(
+                                  padding: EdgeInsets.all(screenWidth * 0.01),
+                                  decoration: BoxDecoration(
+                                    color: primary,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: Colors.white, width: 2),
+                                  ),
+                                  child: Icon(
+                                    Icons.edit,
+                                    size: screenWidth * 0.04,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: spacingFactor * 1.5),
+                      // Form Fields with Responsive Sizing
+                      _buildResponsiveTextField(
+                        context,
+                        labelText: '  First Name',
+                        onSaved: (value) => _fullName = value,
+                        validator: (value) => value?.isEmpty ?? true
+                            ? 'Please enter your full name'
+                            : null,
+                      ),
+                      SizedBox(height: spacingFactor),
+                      _buildResponsiveTextField(
+                        context,
+                        labelText: '  last Name',
+                        onSaved: (value) => _nickname = value,
+                      ),
+                      SizedBox(height: spacingFactor),
+                      GestureDetector(
+                        onTap: () => _openCalendar(context),
+                        child: Container(
+                          height: 60,
+                          width: 370,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(33),
+                              color: Colors.grey[50]),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              '    Date of Birth',
+                              style: TextStyle(
+                                color: const Color.fromARGB(255, 85, 85, 85),
+                                  fontFamily: 'Nunito',
+                                  fontSize: screenWidth * 0.04),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: spacingFactor),
+                      _buildResponsiveTextField(
+                        context,
+                        labelText: '  Email',
+                        obscureText: true,
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Please enter your password';
+                          }
+                          if (value!.length < 6) {
+                            return 'Password must be at least 6 characters';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: spacingFactor),
+                      // Phone Number with Responsive Country Code Picker
+                      _buildPhoneNumberField(context, spacingFactor),
+                      SizedBox(height: screenHeight * 0.04),
+
+                      const Text(
+                        "Don't worry, you can always change it later",
+                        style: TextStyle(
+                          fontFamily: 'Nunito',
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: screenHeight * 0.04),
+                      // Continue Button
+                      _buildContinueButton(context),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 
-  Widget _buildUserTypeCard(UserTypeData userType) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 5.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: userType.color.withOpacity(0.2),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Header Section
-            Container(
-              height: 180,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    userType.color,
-                    userType.color.withOpacity(0.8),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      userType.icon,
-                      size: 60,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      userType.title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      userType.description,
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.9),
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // Features Section
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Key Features',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  ...userType.features.map((feature) => _buildFeatureItem(
-                        feature,
-                        userType.color,
-                      )),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Payment Options',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  _buildPaymentSection(userType),
-                ],
-              ),
-            ),
-            // Action Button
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Navigate to registration
-                },
-                child: const Text('Get Started'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: userType.color,
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-              ),
-            ),
-          ],
+// Helper method for creating responsive text fields
+  Widget _buildResponsiveTextField(
+    BuildContext context, {
+    required String labelText,
+    TextInputType? keyboardType,
+    bool obscureText = false,
+    FormFieldSetter<String>? onSaved,
+    FormFieldValidator<String>? validator,
+  }) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle:
+            TextStyle(fontFamily: 'Nunito', fontSize: screenWidth * 0.04),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(33),
+          borderSide: BorderSide.none,
+        ),
+        filled: true,
+        fillColor: Colors.grey[50],
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(33),
+          borderSide: BorderSide(color: Colors.grey[50]!),
         ),
       ),
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      onSaved: onSaved,
+      validator: validator,
     );
   }
 
-  Widget _buildFeatureItem(String feature, Color color) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(
-              Icons.check_circle_outline,
-              color: color,
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 15),
-          Text(
-            feature,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[800],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+// Helper method for phone number field with country code
+  Widget _buildPhoneNumberField(BuildContext context, double spacingFactor) {
+    final screenWidth = MediaQuery.of(context).size.width;
 
-  Widget _buildPaymentSection(UserTypeData userType) {
-    return Container(
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildPaymentIcon(Icons.credit_card, 'Cards'),
-              _buildPaymentIcon(Icons.account_balance, 'Bank'),
-              _buildPaymentIcon(Icons.phone_android, 'UPI'),
-              _buildPaymentIcon(Icons.account_balance_wallet, 'Wallet'),
-            ],
-          ),
-          const SizedBox(height: 15),
-          ...userType.paymentMethods.map((method) => _buildPaymentMethod(method)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPaymentIcon(IconData icon, String label) {
-    return Column(
+    return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(10),
+          width: screenWidth * 0.25, // Responsive width
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                blurRadius: 5,
-                offset: const Offset(0, 2),
-              ),
-            ],
+            border: Border.all(color: Colors.grey[50]!),
+            borderRadius: BorderRadius.circular(33),
           ),
-          child: Icon(icon, size: 24),
+          child: CountryCodePicker(
+            onChanged: (country) {
+              setState(() {
+                _countryCode = country.dialCode!;
+              });
+            },
+            initialSelection: 'US',
+            favorite: const ['US', 'UK'],
+            showCountryOnly: false,
+            showOnlyCountryWhenClosed: false,
+            alignLeft: false,
+            textStyle: TextStyle(fontSize: screenWidth * 0.03),
+          ),
         ),
-        const SizedBox(height: 5),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 12),
+        SizedBox(width: screenWidth * 0.02),
+        Expanded(
+          child: _buildResponsiveTextField(
+            context,
+            labelText: 'Phone Number',
+            keyboardType: TextInputType.phone,
+            onSaved: (value) => _phoneNumber = value,
+            validator: (value) => value?.isEmpty ?? true
+                ? 'Please enter your phone number'
+                : null,
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildPaymentMethod(String method) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.check_circle, color: Colors.green, size: 20),
-          const SizedBox(width: 10),
-          Text(method),
-        ],
+// Helper method for continue button
+  Widget _buildContinueButton(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    return SizedBox(
+      width: screenWidth * 0.9, // 90% of screen width
+      height: screenHeight * 0.07, // 7% of screen height
+      child: ElevatedButton(
+        onPressed: () 
+           => _showAlertDialog(context),
+          
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(33),
+          ),
+        ),
+        child: Text(
+          'Continue',
+          style: TextStyle(
+            fontFamily: 'Nunito',
+            fontSize: screenWidth * 0.045, // Responsive font size
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        // Start a timer to navigate after 4 seconds
+        Timer(Duration(seconds: 4), () {
+          // Close the dialog
+          Navigator.of(context).pop();
+
+          // Navigate to the next page (replace with your actual next page)
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) =>
+                    Homepage0()), // Assuming SetFingerprintScreen exists
+          );
+        });
+
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(33),
+          ),
+          backgroundColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircleAvatar(
+                  radius: 40,
+                  backgroundColor: Colors.grey[200],
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.grey,
+                    size: 40,
+                  ),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  "Congratulations!",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: primary,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                  child: Text(
+                    "Your account is ready to use. You will be redirected to the Login page in a few seconds.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16),
+                SpinKitFadingCircle(
+                  color: primary,
+                  size: 40.0,
+                ),
+                SizedBox(height: 16),
+                AnimatedDots(controller: _animationController),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    @override
+    Widget build(BuildContext context) => Scaffold(
+          // ... (rest of the build method remains the same)
+          body: SingleChildScrollView(
+            // ...
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  // ... other form fields
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Directly call _showAlertDialog with context
+                        _showAlertDialog(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(33),
+                        ),
+                      ),
+                      child: const Text(
+                        'Continue',
+                        style: TextStyle(
+                          fontFamily: 'Nunito',
+                          fontSize: 16,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(DiagnosticsProperty<DateTime?>('_selectedDate', _selectedDate));
+    properties.add(StringProperty('_countryCode', _countryCode));
+    properties.add(StringProperty('_phoneNumber', _phoneNumber));
+    properties.add(StringProperty('_nickname', _nickname));
+    properties.add(StringProperty('_email', _email));
+    properties.add(StringProperty('_fullName', _fullName));
+  }
 }
 
-extension on CarouselController {
-  animateToPage(int key) {}
+class AnimatedDots extends StatefulWidget {
+  final AnimationController controller;
+
+  const AnimatedDots({Key? key, required this.controller}) : super(key: key);
+
+  @override
+  State<AnimatedDots> createState() => _AnimatedDotsState();
 }
 
-class UserTypeData {
-  final String title;
-  final String description;
-  final Color color;
-  final IconData icon;
-  final List<String> features;
-  final List<String> paymentMethods;
+class _AnimatedDotsState extends State<AnimatedDots> {
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: widget.controller,
+      builder: (context, child) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildDot(0),
+            _buildDot(1),
+            _buildDot(2),
+          ],
+        );
+      },
+    );
+  }
 
-  UserTypeData({
-    required this.title,
-    required this.description,
-    required this.color,
-    required this.icon,
-    required this.features,
-    required this.paymentMethods,
-  });
+  Widget _buildDot(int index) {
+    return AnimatedBuilder(
+      animation: widget.controller,
+      builder: (context, child) {
+        double scale = 1.0;
+        // Create a pulsing effect for dots with staggered animation
+        double value = widget.controller.value;
+        scale = 1.0 + (0.5 * (1 - ((value + (index * 0.2)) % 1.0).abs()));
+
+        return Transform.scale(
+          scale: scale,
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 4.0),
+            width: 8.0,
+            height: 8.0,
+            decoration: BoxDecoration(
+              color: primary.withOpacity(scale > 1.0 ? 1.0 : 0.5),
+              shape: BoxShape.circle,
+            ),
+          ),
+        );
+      },
+    );
+  }
 }

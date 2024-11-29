@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:myapp/prime.dart';
+import 'package:myapp/others/prime.dart';
 
 class Qrcode extends StatefulWidget {
   const Qrcode({super.key});

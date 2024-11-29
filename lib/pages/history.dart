@@ -86,12 +86,14 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          _buildTabs(),
-          const SizedBox(height: 10),
-          Expanded(child: _buildPaymentList()),
-        ],
+      body: Center(
+        child: Column(
+          children: [
+            _buildTabs(),
+            const SizedBox(height: 10),
+            Expanded(child: _buildPaymentList()),
+          ],
+        ),
       ),
     );
   }

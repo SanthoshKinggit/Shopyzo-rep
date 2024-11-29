@@ -1,13 +1,15 @@
-// ignore_for_file: use_super_parameters, library_private_types_in_public_api, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: use_super_parameters, library_private_types_in_public_api, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_import
 
 import 'package:flutter/material.dart';
-import 'package:myapp/add.dart';
-import 'package:myapp/adjust.dart';
-import 'package:myapp/login.dart';
-import 'package:myapp/person.dart';
-import 'package:myapp/prime.dart';
+
+import 'package:myapp/indicator.dart';
+
+import 'package:myapp/others/prime.dart';
+
 import 'dart:math' as math;
+
 import 'package:myapp/slider.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -73,7 +75,7 @@ class _TechSplashScreenState extends State<TechSplashScreen>
   late Animation<double> zoomOutAnimation; // Added animation for zoom-out
 
   final Color primaryColor = const Color.fromARGB(255, 81, 23, 88);
-  final Color accentColor = const Color.fromARGB(255, 241, 132, 255);
+  final Color accentColor = const Color.fromARGB(255, 81, 23, 88);
 
   final List<CircleConfig> _circles = [];
   final int numberOfCircles =
@@ -166,8 +168,7 @@ class _TechSplashScreenState extends State<TechSplashScreen>
                 end: Alignment.bottomRight,
                 colors: [
                   primaryColor,
-                  Color.lerp(
-                      primaryColor, accentColor, _backgroundController.value)!,
+                  primary
                 ],
               ),
             ),
@@ -229,7 +230,8 @@ class _TechSplashScreenState extends State<TechSplashScreen>
                                         width: circle.size,
                                         height: circle.size,
                                         decoration: BoxDecoration(
-                                          color: accentColor.withOpacity(0.3),
+                                          color:  const Color.fromARGB(255, 255, 255, 255),
+
                                           shape: BoxShape.circle,
                                         ),
                                       ),
@@ -256,12 +258,14 @@ class _TechSplashScreenState extends State<TechSplashScreen>
                                         shape: BoxShape.circle,
                                         color: Colors.white.withOpacity(0.1),
                                         border: Border.all(
-                                          color: accentColor.withOpacity(0.5),
+                                          color:                   Colors.white,
+
                                           width: 2,
                                         ),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: accentColor.withOpacity(0.3),
+                                            color:primary,
+
                                             blurRadius: 30,
                                             spreadRadius: 5,
                                           ),

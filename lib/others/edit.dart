@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:myapp/homepage.dart';
-import 'package:myapp/prime.dart';
-import 'package:myapp/profileedit.dart';
-import 'package:myapp/qrcode.dart';
-import 'package:myapp/qrscan.dart';
+import 'package:myapp/others/prime.dart';
+import 'package:myapp/others/profileedit.dart';
+import 'package:myapp/mainpages/qrcode.dart';
+import 'package:myapp/mainpages/qrscan.dart';
 
 class ProfileSettingsScreen extends StatefulWidget {
   const ProfileSettingsScreen({super.key});

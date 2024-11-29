@@ -1,7 +1,10 @@
+// ignore_for_file: unused_import, unused_element
+
 import 'package:flutter/material.dart';
-import 'package:myapp/person.dart';
-import 'package:myapp/prime.dart';
-import 'package:myapp/profile.dart';
+import 'package:myapp/indicator.dart';
+import 'package:myapp/log.dart';
+import 'package:myapp/others/prime.dart';
+import 'package:myapp/others/profile.dart';
 
 class Homepage1 extends StatefulWidget {
   const Homepage1({super.key});
@@ -26,8 +29,8 @@ class _Homepage1State extends State<Homepage1> {
   @override
   Widget build(BuildContext context) {
     // Get screen dimensions
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width*0.90;
+    final screenHeight = MediaQuery.of(context).size.height*0.90;
 
     return Scaffold(
       body: SafeArea(
@@ -35,23 +38,28 @@ class _Homepage1State extends State<Homepage1> {
           child: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: screenWidth * 0.06, // Responsive horizontal padding
-              vertical: screenHeight * 0.02, // Responsive vertical padding
+              // Responsive vertical padding
             ),
             child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Back Button
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back_ios),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ),
+                  SizedBox(height: screenHeight * 0.03),
 
-                  SizedBox(height: screenHeight * 0.08),
+                  // Back Button
+                  Row(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_back_ios),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: screenHeight * 0.03),
 
                   // Title
                   Align(
@@ -67,7 +75,7 @@ class _Homepage1State extends State<Homepage1> {
                     ),
                   ),
 
-                  SizedBox(height: screenHeight * 0.04),
+                  SizedBox(height: screenHeight * 0.05),
 
                   // Email TextField
                   _buildTextField(
@@ -79,7 +87,7 @@ class _Homepage1State extends State<Homepage1> {
                     screenWidth: screenWidth,
                   ),
 
-                  SizedBox(height: screenHeight * 0.02),
+                  SizedBox(height: screenHeight * 0.04),
 
                   // Password TextField
                   _buildTextField(
@@ -104,7 +112,7 @@ class _Homepage1State extends State<Homepage1> {
                     ),
                   ),
 
-                  SizedBox(height: screenHeight * 0.02),
+                  SizedBox(height: screenHeight * 0.03),
 
                   // Remember me checkbox
                   Row(
@@ -117,7 +125,7 @@ class _Homepage1State extends State<Homepage1> {
                           });
                         },
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(33),
                         ),
                         side: BorderSide(color: Colors.grey[500]!),
                       ),
@@ -132,25 +140,51 @@ class _Homepage1State extends State<Homepage1> {
                     ],
                   ),
 
-                  SizedBox(height: screenHeight * 0.03),
+                  SizedBox(height: screenHeight * 0.04),
 
                   // Sign up button
                   SizedBox(
                     width: double.infinity,
                     height: screenHeight * 0.07,
                     child: ElevatedButton(
-                      onPressed: _isFormValid() ? _handleSignUp : null,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AlertBoxScreen()),
+                        );
+                        final snackBar = SnackBar(
+                          content: Center(child: Text('Sign Up Completed')),
+                          backgroundColor: primary, // Background color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                33.0), // Apply border radius
+                          ),
+
+                          behavior: SnackBarBehavior
+                              .floating, // Make the SnackBar floating
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 80.0,
+                              vertical: 10.0), // Margin to center it
+                          duration:
+                              Duration(seconds: 3), // Snackbar display duration
+                        );
+
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(snackBar); // Show the Snackbar
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(33),
                         ),
+                        // Add disabled state styling
                       ),
-                      child: Text(
+                      child: const Text(
                         'Sign up',
                         style: TextStyle(
                           fontFamily: 'Nunito',
-                          fontSize: screenWidth * 0.04,
+                          fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
@@ -158,17 +192,17 @@ class _Homepage1State extends State<Homepage1> {
                     ),
                   ),
 
-                  SizedBox(height: screenHeight * 0.03),
+                  SizedBox(height: screenHeight * 0.04),
 
                   // Divider with text
                   _buildDividerWithText(screenWidth),
 
-                  SizedBox(height: screenHeight * 0.03),
+                  SizedBox(height: screenHeight * 0.04),
 
                   // Social Login Icons
                   _buildSocialLoginRow(screenWidth),
 
-                  SizedBox(height: screenHeight * 0.03),
+                  SizedBox(height: screenHeight * 0.04),
 
                   // Sign in link
                   _buildSignInLink(),
@@ -201,6 +235,7 @@ class _Homepage1State extends State<Homepage1> {
         setState(() {}); // Rebuild to show validation
       },
       decoration: InputDecoration(
+        
         hintText: hintText,
         hintStyle: TextStyle(
           color: Colors.grey[400],
@@ -213,12 +248,12 @@ class _Homepage1State extends State<Homepage1> {
         ),
         suffixIcon: suffixIcon,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(33),
           borderSide: BorderSide.none,
         ),
         filled: true,
-        fillColor: Colors.grey[100],
-        errorText: validator(controller.text) ? null : _getErrorText(hintText),
+        fillColor: const Color.fromARGB(255, 255, 255, 255),
+        // errorText: validator(controller.text) ? null : _getErrorText(hintText),
       ),
     );
   }
@@ -250,8 +285,7 @@ class _Homepage1State extends State<Homepage1> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _buildSocialIcon(
-          'https://upload.wikimedia.org/wikipedia/commons/6/6c/Facebook_Logo_2023.png',
-          isNetwork: true,
+          'assets/logo/Facebook_Logo_2023.png',
           height: screenWidth * 0.07,
         ),
         _buildSocialIcon(
@@ -267,14 +301,22 @@ class _Homepage1State extends State<Homepage1> {
   }
 
   // Social Icon Builder
-  Widget _buildSocialIcon(String imagePath, {bool isNetwork = false, double? height}) {
+  Widget _buildSocialIcon(String imagePath,
+      { double? height}) {
     return GestureDetector(
       onTap: () {
-        // Add social login logic
+        // Show a dialog or alert for social login
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text('Social login coming soon!'),
+            );
+          },
+        );
       },
-      child: isNetwork
-          ? Image.network(imagePath, height: height)
-          : Image.asset(imagePath, height: height),
+      child: 
+         Image.asset(imagePath, height: height),
     );
   }
 
@@ -311,49 +353,42 @@ class _Homepage1State extends State<Homepage1> {
 
   // Validation methods
   bool _isEmailValid(String email) {
-    if (email.isEmpty) return true;
+    if (email.isEmpty) {
+      return false;
+    }
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 
   bool _isPasswordValid(String password) {
-    if (password.isEmpty) return true;
+    if (password.isEmpty) {
+      return false;
+    }
     return password.length >= 6;
   }
 
-  String _getErrorText(String field) {
-    switch (field) {
-      case 'Email':
-        return 'Enter a valid email';
-      case 'Password':
-        return 'Password must be at least 6 characters';
-      default:
-        return 'Invalid input';
-    }
-  }
+  // String _getErrorText(String field) {
+  //   switch (field) {
+  //     case 'Email':
+  //       return 'Enter a valid email';
+  //     case 'Password':
+  //       return 'Password must be at least 6 characters';
+  //     default:
+  //       return 'This field cannot be empty';
+  //   }
+  // }
 
+  // Check if the form is valid
   bool _isFormValid() {
     return _isEmailValid(_emailController.text) &&
-        _isPasswordValid(_passwordController.text) &&
-        _emailController.text.isNotEmpty &&
-        _passwordController.text.isNotEmpty;
+        _isPasswordValid(_passwordController.text);
   }
 
+  // Handle sign up
   void _handleSignUp() {
+    // Perform sign-up logic, e.g., saving data or API calls
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const Homepage0()),
     );
-    final snackBar = SnackBar(
-      content: Center(child: Text('Sign Up Completed')),
-      backgroundColor: primary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(33.0),
-      ),
-      behavior: SnackBarBehavior.floating,
-      margin: EdgeInsets.symmetric(horizontal: 80.0, vertical: 10.0),
-      duration: Duration(seconds: 3),
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
