@@ -29,7 +29,7 @@ class _UserTypeSelectionState extends State<UserTypeSelection>
       description: 'Browse and purchase products',
       backgroundColor: const Color(0xFF6FA3EF),
       iconColor: Colors.white,
-      destination: AttractiveRegistrationForm(),
+      destination: RegistrationForm(),
       fontFamily: 'poppins',
       iconSize: 24,
     ),
