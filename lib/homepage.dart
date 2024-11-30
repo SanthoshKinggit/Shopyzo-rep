@@ -270,9 +270,9 @@ class _PaymentAppState extends State<PaymentApp> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(50),
                             child: Image.asset(
-                              'assets/logo/WhatsApp Image 2024-11-30 at 10.57.28 AM.png',
-                              height: 70,
-                              fit: BoxFit.contain,
+                              'assets/logo/WhatsApp Image 2024-11-30 at 10.57.28 AM-modified.png',
+                              height: 50,
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
@@ -317,7 +317,7 @@ class _PaymentAppState extends State<PaymentApp> {
                       ),
                     ),
                     Text(
-                      'andrew_ainsley@yourdomain.com',
+                      '**** 8957 4774',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[600],
@@ -429,42 +429,25 @@ class _PaymentAppState extends State<PaymentApp> {
                           _scaffoldKey.currentState?.openDrawer();
                         },
                         child: Image.asset(
-                          'assets/logo/WhatsApp Image 2024-11-30 at 10.57.28 AM.png',
-                          height: 50,
+                          'assets/logo/WhatsApp Image 2024-11-30 at 10.57.28 AM-modified.png',
+                          height: 35,
                         ),
                       ),
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                '  Andrew Ainsley  ',
-                                style: TextStyle(
-                                  fontFamily: 'Nunito',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                          // PremiumGoldIcon(
-                          //   size: 26,
-                          //   baseColor: const Color.fromARGB(255, 246, 206, 4),
-                          //   // icon: const Icon(
-                          //   //   Icons.diamond_outlined,
-                          //   //   color: Colors.amber,
-                          //   // ),
-                          //   // onPressed: () {
-                          //   //   Navigator.push(
-                          //   //       context,
-                          //   //       MaterialPageRoute(
-                          //   //           builder: (context) =>
-                          //   //               PricingPlansScreen()));
-                          //   // },
-                          // ),
-                        ],
+                      const Text(
+                        '  Andrew Ainsley  ',
+                        style: TextStyle(
+                          fontFamily: 'Nunito',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
+                      SizedBox(
+                        width: 150,
+                      ),
+                      Icon(
+                        Icons.notifications_none_outlined,
+                        color: primary,
+                      )
                       // Row(
                       //   children: [
                       //     IconButton(
@@ -540,23 +523,25 @@ class _PaymentAppState extends State<PaymentApp> {
                                       ),
                                     ],
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          height: 40,
-                                        ),
-                                      ],
-                                    ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: 220,
+                                      ),
+                                      Icon(
+                                        Icons.credit_card,
+                                        color: Colors.white,
+                                        size: 44,
+                                      )
+                                    ],
                                   ),
                                   const SizedBox(height: 4),
                                   Row(
                                     children: [
                                       const Text(
-                                        'Your Balance\n12,689',
+                                        'Your Balance\n₹12,689',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontFamily: 'Nunito',
@@ -589,7 +574,7 @@ class _PaymentAppState extends State<PaymentApp> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Incomes',
+                                        'Wallet',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: 'Nunito',
@@ -597,7 +582,7 @@ class _PaymentAppState extends State<PaymentApp> {
                                         ),
                                       ),
                                       Text(
-                                        '                   Andrew Ainsley\n                    ',
+                                        '                   Recent Transactions\n                    ',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: 'Nunito',
@@ -606,23 +591,25 @@ class _PaymentAppState extends State<PaymentApp> {
                                       ),
                                     ],
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          height: 40,
-                                        ),
-                                      ],
-                                    ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: 220,
+                                      ),
+                                      Icon(
+                                        Icons.wallet,
+                                        color: Colors.white,
+                                        size: 44,
+                                      )
+                                    ],
                                   ),
                                   const SizedBox(height: 4),
                                   Row(
                                     children: [
                                       const Text(
-                                        'Your Balance\n1,689',
+                                        'Total Amount\n1,689',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontFamily: 'Nunito',

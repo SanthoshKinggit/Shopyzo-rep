@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:myapp/homepage.dart';
+import 'package:myapp/log.dart';
 import 'package:myapp/others/prime.dart';
+import 'package:myapp/pass.dart';
 
 class PinInputScreen extends StatefulWidget {
   @override
@@ -106,7 +108,7 @@ class _PinInputScreenState extends State<PinInputScreen> {
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PaymentApp()));
+                      MaterialPageRoute(builder: (context) => SetFingerprintScreen()));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primary,

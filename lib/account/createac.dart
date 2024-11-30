@@ -29,8 +29,8 @@ class _Homepage1State extends State<Homepage1> {
   @override
   Widget build(BuildContext context) {
     // Get screen dimensions
-    final screenWidth = MediaQuery.of(context).size.width*0.90;
-    final screenHeight = MediaQuery.of(context).size.height*0.90;
+    final screenWidth = MediaQuery.of(context).size.width * 0.90;
+    final screenHeight = MediaQuery.of(context).size.height * 0.90;
 
     return Scaffold(
       body: SafeArea(
@@ -134,7 +134,7 @@ class _Homepage1State extends State<Homepage1> {
                         style: TextStyle(
                           fontFamily: 'Nunito',
                           color: Colors.grey[600],
-                          fontSize: screenWidth * 0.035,
+                          fontSize: screenWidth * 0.040,
                         ),
                       ),
                     ],
@@ -155,7 +155,7 @@ class _Homepage1State extends State<Homepage1> {
                         );
                         final snackBar = SnackBar(
                           content: Center(child: Text('Sign Up Completed')),
-                          backgroundColor: primary, // Background color
+                          backgroundColor: const Color.fromARGB(255, 69, 69, 69), // Background color
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
                                 33.0), // Apply border radius
@@ -165,7 +165,7 @@ class _Homepage1State extends State<Homepage1> {
                               .floating, // Make the SnackBar floating
                           margin: EdgeInsets.symmetric(
                               horizontal: 80.0,
-                              vertical: 10.0), // Margin to center it
+                              vertical: 60.0), // Margin to center it
                           duration:
                               Duration(seconds: 3), // Snackbar display duration
                         );
@@ -192,17 +192,17 @@ class _Homepage1State extends State<Homepage1> {
                     ),
                   ),
 
-                  SizedBox(height: screenHeight * 0.04),
+                  SizedBox(height: screenHeight * 0.05),
 
                   // Divider with text
                   _buildDividerWithText(screenWidth),
 
-                  SizedBox(height: screenHeight * 0.04),
+                  SizedBox(height: screenHeight * 0.05),
 
                   // Social Login Icons
                   _buildSocialLoginRow(screenWidth),
 
-                  SizedBox(height: screenHeight * 0.04),
+                  SizedBox(height: screenHeight * 0.05),
 
                   // Sign in link
                   _buildSignInLink(),
@@ -235,12 +235,11 @@ class _Homepage1State extends State<Homepage1> {
         setState(() {}); // Rebuild to show validation
       },
       decoration: InputDecoration(
-        
         hintText: hintText,
         hintStyle: TextStyle(
           color: Colors.grey[400],
           fontFamily: 'Nunito',
-          fontSize: screenWidth * 0.04,
+          fontSize: screenWidth * 0.05,
         ),
         prefixIcon: Icon(
           prefixIcon,
@@ -301,8 +300,7 @@ class _Homepage1State extends State<Homepage1> {
   }
 
   // Social Icon Builder
-  Widget _buildSocialIcon(String imagePath,
-      { double? height}) {
+  Widget _buildSocialIcon(String imagePath, {double? height}) {
     return GestureDetector(
       onTap: () {
         // Show a dialog or alert for social login
@@ -315,8 +313,7 @@ class _Homepage1State extends State<Homepage1> {
           },
         );
       },
-      child: 
-         Image.asset(imagePath, height: height),
+      child: Image.asset(imagePath, height: height),
     );
   }
 

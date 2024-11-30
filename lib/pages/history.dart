@@ -72,16 +72,18 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.blue,
         title: const Text(
-          'In & Out Payment',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          'Transaction History',
+          style: TextStyle(
+              color: Color.fromARGB(255, 255, 255, 255),
+              fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Color.fromARGB(255, 255, 255, 255)),
         actions: [
           IconButton(
-            icon: const Icon(Icons.filter_list, color: Colors.black),
+            icon: const Icon(Icons.filter_list, color: Color.fromARGB(255, 255, 255, 255)),
             onPressed: () => _openCalendar(context),
           ),
         ],
@@ -89,8 +91,9 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
       body: Center(
         child: Column(
           children: [
+            const SizedBox(height: 20),
             _buildTabs(),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             Expanded(child: _buildPaymentList()),
           ],
         ),
@@ -179,7 +182,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
                 ),
               ),
               Text(
-                '${item.amount < 0 ? '-' : ''}\$${item.amount.abs()}',
+                '${item.amount < 0 ? '-' : ''}₹${item.amount.abs()}',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,

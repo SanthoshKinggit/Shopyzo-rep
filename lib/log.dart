@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_element, unused_import
 
 import 'package:flutter/material.dart';
+import 'package:myapp/homepage.dart';
 import 'package:myapp/others/forgot.dart';
 import 'package:myapp/indicator.dart';
 import 'package:myapp/pass.dart';
@@ -152,13 +153,11 @@ class _Homepage0State extends State<Homepage0> {
                     width: double.infinity,
                     height: screenHeight * 0.07,
                     child: ElevatedButton(
-                      onPressed: ()  
-                      { 
-                      Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => SetFingerprintScreen()),
-    );
-                      
-                      
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (_) => PaymentApp()),
+                        );
+
                         final snackBar = SnackBar(
                           content: Center(child: Text('Login Successful')),
                           backgroundColor: primary, // Background color

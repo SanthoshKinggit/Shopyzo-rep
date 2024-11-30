@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myapp/log.dart';
+import 'package:myapp/mainpages/pin.dart';
 import 'package:myapp/others/prime.dart';
 
 class AlertBoxScreen extends StatefulWidget {
@@ -370,7 +371,7 @@ class _AlertBoxScreenState extends State<AlertBoxScreen>
       barrierDismissible: false,
       builder: (BuildContext context) {
         // Start a timer to navigate after 4 seconds
-        Timer(Duration(seconds: 4), () {
+        Timer(Duration(seconds: 2), () {
           // Close the dialog
           Navigator.of(context).pop();
 
@@ -378,7 +379,7 @@ class _AlertBoxScreenState extends State<AlertBoxScreen>
           Navigator.of(context).push(
             MaterialPageRoute(
                 builder: (context) =>
-                    Homepage0()), // Assuming SetFingerprintScreen exists
+                    PinInputScreen()), // Assuming SetFingerprintScreen exists
           );
         });
 
