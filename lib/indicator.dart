@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myapp/log.dart';
-import 'package:myapp/pass.dart';
 import 'package:myapp/others/prime.dart';
 
 class AlertBoxScreen extends StatefulWidget {

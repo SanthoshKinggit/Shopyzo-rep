@@ -5,6 +5,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,6 +17,8 @@ class MyApp extends StatelessWidget {
 }
 
 class RoleSelectionScreen extends StatelessWidget {
+  const RoleSelectionScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +80,7 @@ class RoleSelectionScreen extends StatelessWidget {
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: const [
                 Text(
                   'Choose Your Role',
                   style: TextStyle(
@@ -129,7 +133,7 @@ class RoleCard extends StatelessWidget {
   final String subtitle;
   final IconData icon;
 
-  RoleCard({required this.color, required this.title, required this.subtitle, required this.icon});
+  const RoleCard({super.key, required this.color, required this.title, required this.subtitle, required this.icon});
 
   @override
   Widget build(BuildContext context) {
