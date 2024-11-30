@@ -192,17 +192,17 @@ class _Homepage1State extends State<Homepage1> {
                     ),
                   ),
 
-                  SizedBox(height: screenHeight * 0.05),
+                  SizedBox(height: screenHeight * 0.06),
 
                   // Divider with text
                   _buildDividerWithText(screenWidth),
 
-                  SizedBox(height: screenHeight * 0.05),
+                  SizedBox(height: screenHeight * 0.07),
 
                   // Social Login Icons
                   _buildSocialLoginRow(screenWidth),
 
-                  SizedBox(height: screenHeight * 0.05),
+                  SizedBox(height: screenHeight * 0.06),
 
                   // Sign in link
                   _buildSignInLink(),
@@ -269,7 +269,7 @@ class _Homepage1State extends State<Homepage1> {
             style: TextStyle(
               fontFamily: 'Nunito',
               color: Colors.grey[600],
-              fontSize: screenWidth * 0.035,
+              fontSize: screenWidth * 0.040,
             ),
           ),
         ),
@@ -285,15 +285,15 @@ class _Homepage1State extends State<Homepage1> {
       children: [
         _buildSocialIcon(
           'assets/logo/Facebook_Logo_2023.png',
-          height: screenWidth * 0.07,
+          height: screenWidth * 0.10,
         ),
         _buildSocialIcon(
           'assets/logo/Google_Icons-09-512.webp',
-          height: screenWidth * 0.1,
+          height: screenWidth * 0.13,
         ),
         _buildSocialIcon(
           'assets/logo/apple-logo-transparent.png',
-          height: screenWidth * 0.08,
+          height: screenWidth * 0.10,
         ),
       ],
     );

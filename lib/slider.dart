@@ -195,25 +195,14 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     alignment: Alignment.topRight,
                     child: ScaleTransition(
                       scale: buttonScaleAnimation,
-                      child: FadeTransition(
-                        opacity: _buttonFadeAnimation,
+                      
                         child: TextButton(
-                          onPressed: () => Navigator.pushReplacement(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) =>
-                                      LoginScreen(),
-                              transitionsBuilder: (context, animation,
-                                  secondaryAnimation, child) {
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: child,
-                                );
-                              },
-                              transitionDuration: Duration(milliseconds: 800),
-                            ),
-                          ),
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                          },
+                            
+                            
+                        
                           child: Text(
                             'Skip',
                             style: TextStyle(
@@ -225,7 +214,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                           ),
                         ),
                       ),
-                    ),
+                    
                   ),
                 ),
 
