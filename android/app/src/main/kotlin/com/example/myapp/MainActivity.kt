@@ -1,6 +1,6 @@
 
 
-package com.example.mlkit.barcode_scanning
+package com.example.mlkit.ShopyZo
 
 import io.flutter.embedding.android.FlutterActivity
 
