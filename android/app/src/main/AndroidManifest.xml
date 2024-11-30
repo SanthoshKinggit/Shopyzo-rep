@@ -1,6 +1,6 @@
 
     <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mlkit.barcode_scanning">
+    package="com.example.mlkit.ShopyZo">
     <!-- ... rest of your manifest -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />

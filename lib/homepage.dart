@@ -270,7 +270,7 @@ class _PaymentAppState extends State<PaymentApp> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(50),
                             child: Image.asset(
-                              'assets/logo/WhatsApp_Image_2024-11-28_at_11.08.12_AM__1_-removebg-preview (1).png',
+                              'assets/logo/WhatsApp Image 2024-11-30 at 10.57.28 AM.png',
                               height: 70,
                               fit: BoxFit.contain,
                             ),
@@ -429,7 +429,7 @@ class _PaymentAppState extends State<PaymentApp> {
                           _scaffoldKey.currentState?.openDrawer();
                         },
                         child: Image.asset(
-                          'assets/logo/WhatsApp_Image_2024-11-28_at_11.08.12_AM__1_-removebg-preview (1).png',
+                          'assets/logo/WhatsApp Image 2024-11-30 at 10.57.28 AM.png',
                           height: 50,
                         ),
                       ),
