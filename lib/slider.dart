@@ -50,7 +50,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     },
     {
       'title': 'Fast Payment',
-      'description': 'Manage finances easily with secure payments',
+      'description': 'Manage finances easily with secure and Fast payments',
       'image': 'assets/logo/6036950.jpg',
       'gradient': [
         Color.fromARGB(255, 255, 255, 255),

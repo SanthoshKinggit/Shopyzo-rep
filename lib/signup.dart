@@ -5,6 +5,7 @@ import 'package:myapp/account/accountacreate.dart';
 import 'package:myapp/account/createac.dart';
 import 'package:myapp/others/login.dart';
 import 'package:myapp/others/prime.dart';
+import 'package:myapp/pages/signin.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -60,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // Title
                   Text(
-                    'Sign Up',
+                    'Sign in',
                     style: TextStyle(
                       fontFamily: 'Nunito',
                       fontSize: screenWidth * 0.07,
@@ -125,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const Homepage1()),
+                            builder: (context) => const Signinscreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -137,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       elevation: 0,
                     ),
                     child: Text(
-                      'Sign In',
+                      'Sign in',
                       style: TextStyle(
                         fontFamily: 'Nunito',
                         fontSize: screenWidth * 0.045,

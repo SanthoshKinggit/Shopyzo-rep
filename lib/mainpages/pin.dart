@@ -1,8 +1,6 @@
-// ignore_for_file: use_key_in_widget_constructors, unused_import
-
 import 'package:flutter/material.dart';
-import 'package:myapp/homepage.dart';
-import 'package:myapp/log.dart';
+import 'package:flutter/services.dart';
+
 import 'package:myapp/others/prime.dart';
 import 'package:myapp/pass.dart';
 
@@ -12,6 +10,24 @@ class PinInputScreen extends StatefulWidget {
 }
 
 class _PinInputScreenState extends State<PinInputScreen> {
+  // Create list of text controllers and focus nodes for each PIN digit
+  final List<TextEditingController> _pinControllers = 
+      List.generate(4, (_) => TextEditingController());
+  final List<FocusNode> _pinFocusNodes = 
+      List.generate(4, (_) => FocusNode());
+
+  @override
+  void dispose() {
+    // Dispose controllers and focus nodes to prevent memory leaks
+    for (var controller in _pinControllers) {
+      controller.dispose();
+    }
+    for (var focusNode in _pinFocusNodes) {
+      focusNode.dispose();
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,9 +47,7 @@ class _PinInputScreenState extends State<PinInputScreen> {
         child: Center(
           child: Column(
             children: [
-              SizedBox(
-                height: 80,
-              ),
+              SizedBox(height: 80),
               Text(
                 'Add a PIN number to make your account more secure',
                 style: TextStyle(
@@ -74,10 +88,15 @@ class _PinInputScreenState extends State<PinInputScreen> {
                       ],
                     ),
                     child: TextFormField(
+                      controller: _pinControllers[index],
+                      focusNode: _pinFocusNodes[index],
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
                       maxLength: 1,
                       obscureText: true,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
                       style: TextStyle(
                         fontSize: 24,
                         fontFamily: 'Nunito',
@@ -100,6 +119,17 @@ class _PinInputScreenState extends State<PinInputScreen> {
                           ),
                         ),
                       ),
+                      onChanged: (value) {
+                        // Automatically move to next field when a digit is entered
+                        if (value.length == 1) {
+                          if (index < 3) {
+                            FocusScope.of(context).requestFocus(_pinFocusNodes[index + 1]);
+                          } else {
+                            // Last field - remove focus
+                            _pinFocusNodes[index].unfocus();
+                          }
+                        }
+                      },
                     ),
                   );
                 }),
@@ -107,8 +137,19 @@ class _PinInputScreenState extends State<PinInputScreen> {
               const SizedBox(height: 60),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SetFingerprintScreen()));
+                  // Validate PIN input
+                  String pin = _pinControllers.map((controller) => controller.text).join();
+                  if (pin.length == 4) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SetFingerprintScreen()));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Please enter a complete 4-digit PIN'),
+                        backgroundColor: Colors.deepPurple.shade700,
+                      ),
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primary,
@@ -134,30 +175,27 @@ class _PinInputScreenState extends State<PinInputScreen> {
               ),
               const SizedBox(height: 10),
               TextButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text('Contact support for assistance'),
-                        backgroundColor: Colors.deepPurple.shade700,
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'Need Help?',
-                    style: TextStyle(
-                      color: primary,
-                      fontFamily: 'Nunito',
-                      fontSize: 16,
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('Contact support for assistance'),
+                      backgroundColor: Colors.deepPurple.shade700,
                     ),
-                  ))
+                  );
+                },
+                child: const Text(
+                  'Need Help?',
+                  style: TextStyle(
+                    color: primary,
+                    fontFamily: 'Nunito',
+                    fontSize: 16,
+                  ),
+                )
+              )
             ],
           ),
         ),
       ),
     );
-  }
-
-  bool isNumeric(String value) {
-    return double.tryParse(value) != null;
   }
 }

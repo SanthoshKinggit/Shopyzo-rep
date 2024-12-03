@@ -250,7 +250,7 @@ class _UserTypeSelectionState extends State<UserTypeSelection>
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 120),
+                SizedBox(height: 160),
 
                 Text(
                   'Choose Your Role',
