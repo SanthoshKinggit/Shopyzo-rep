@@ -33,7 +33,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       'title': 'Order',
       'description':
           'The best app for finance, banking, & e-wallet          today',
-      'image': 'assets/logo/4676729-removebg-preview.png',
+      'image': 'assets/logo/5865172.jpg',
       'gradient': [
         Color.fromARGB(255, 255, 255, 255),
         Color.fromARGB(255, 255, 255, 255),
@@ -42,7 +42,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     {
       'title': 'Shop',
       'description': 'Have an amazing experience with Allpay right now!',
-      'image': 'assets/logo/6077503.jpg',
+      'image': 'assets/logo/9010415.jpg',
       'gradient': [
         Color.fromARGB(255, 255, 255, 255),
         Color.fromARGB(255, 255, 255, 255),
@@ -195,26 +195,30 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     alignment: Alignment.topRight,
                     child: ScaleTransition(
                       scale: buttonScaleAnimation,
-                      
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-                          },
-                            
-                            
-                        
-                          child: Text(
-                            'Skip',
-                            style: TextStyle(
-                              fontFamily: 'Nunito',
-                              color: primary,
-                              fontSize: screenWidth * 0.045,
-                              fontWeight: FontWeight.w500,
+                      child: SizedBox(
+                        height: 46,
+                        child: Card(
+                          color: const Color.fromARGB(255, 231, 209, 234),
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginScreen()));
+                            },
+                            child: Text(
+                              'Skip',
+                              style: TextStyle(
+                                fontFamily: 'Nunito',
+                                color: primary,
+                                fontSize: screenWidth * 0.045,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    
+                    ),
                   ),
                 ),
 

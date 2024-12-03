@@ -155,7 +155,7 @@ class _SigninscreenState extends State<Signinscreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (_) => PaymentApp()),
+                          MaterialPageRoute(builder: (_) => PinInputScreen()),
                         );
 
                         final snackBar = SnackBar(
@@ -186,7 +186,7 @@ class _SigninscreenState extends State<Signinscreen> {
                         // Add disabled state styling
                       ),
                       child: const Text(
-                        'Login',
+                        'Sign in',
                         style: TextStyle(
                           fontFamily: 'Nunito',
                           fontSize: 16,
