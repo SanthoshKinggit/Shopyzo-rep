@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   final String logoPath =
-      'assets/logo/sz-logo-design-vector-swoosh-letter-sz-logo-design-2H73M4G-removebg-preview.png';
+      'assets/logo/Coin - 2.png';
 
   final Color primaryColor = const Color(0xFF0A1F44);
 

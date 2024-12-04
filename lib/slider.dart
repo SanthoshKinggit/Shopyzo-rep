@@ -198,7 +198,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       child: SizedBox(
                         height: 46,
                         child: Card(
-                          color: const Color.fromARGB(255, 231, 209, 234),
+                          color: const Color.fromARGB(255, 254, 243, 255),
                           child: TextButton(
                             onPressed: () {
                               Navigator.push(

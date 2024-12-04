@@ -68,7 +68,7 @@ class _SetFingerprintScreenState extends State<SetFingerprintScreen>
                     child: const Icon(
                       Icons.fingerprint,
                       size: 60,
-                      color: Colors.white,
+                      color: Colors.white
                     ),
                   ),
                 );

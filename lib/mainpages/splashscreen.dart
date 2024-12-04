@@ -1,3 +1,4 @@
+// ignore_for_file: use_super_parameters, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -5,7 +6,6 @@ import 'dart:math' as math;
 import 'package:myapp/others/prime.dart';
 
 class TechSplashScreen extends StatefulWidget {
-  
   final String logoPath;
   final Function(BuildContext) onAnimationComplete;
 
@@ -109,8 +109,7 @@ class _TechSplashScreenState extends State<TechSplashScreen>
     _ringController.dispose();
     super.dispose();
   }
-
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,10 +121,7 @@ class _TechSplashScreenState extends State<TechSplashScreen>
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  primaryColor,
-                  primary
-                ],
+                colors: [primaryColor, primary],
               ),
             ),
             child: Stack(
@@ -186,8 +182,8 @@ class _TechSplashScreenState extends State<TechSplashScreen>
                                         width: circle.size,
                                         height: circle.size,
                                         decoration: BoxDecoration(
-                                          color:  const Color.fromARGB(255, 255, 255, 255),
-
+                                          color: const Color.fromARGB(
+                                              255, 255, 255, 255),
                                           shape: BoxShape.circle,
                                         ),
                                       ),
@@ -214,14 +210,12 @@ class _TechSplashScreenState extends State<TechSplashScreen>
                                         shape: BoxShape.circle,
                                         color: Colors.white.withOpacity(0.1),
                                         border: Border.all(
-                                          color:                   Colors.white,
-
+                                          color: Colors.white,
                                           width: 2,
                                         ),
                                         boxShadow: [
                                           BoxShadow(
-                                            color:primary,
-
+                                            color: primary,
                                             blurRadius: 30,
                                             spreadRadius: 5,
                                           ),
@@ -229,13 +223,13 @@ class _TechSplashScreenState extends State<TechSplashScreen>
                                       ),
                                       child: Center(
                                         child: SizedBox(
-                                          width: 400,
-                                            height: 400,
+                                          width: 250,
+                                          height: 110,
                                           child: Image.asset(
                                             widget.logoPath,
-                                            width: 400,
-                                            height: 400,
-                                            color: Colors.white,
+                                            width: 200,
+                                            height: 200,
+                                            
                                             errorBuilder:
                                                 (context, error, stackTrace) {
                                               return Icon(
@@ -254,40 +248,39 @@ class _TechSplashScreenState extends State<TechSplashScreen>
                             },
                           ),
                           Padding(
-                        padding: const EdgeInsets.only(top: 600.0),
-                        child: AnimatedBuilder(
-                          animation: _mainController,
-                          builder: (context, child) {
-                            return Opacity(
-                              opacity: _opacityAnimation.value,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'ShopyZo',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 28,
-                                      fontFamily: 'Nunito',
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 2,
-                                    ),
+                            padding: const EdgeInsets.only(top: 600.0),
+                            child: AnimatedBuilder(
+                              animation: _mainController,
+                              builder: (context, child) {
+                                return Opacity(
+                                  opacity: _opacityAnimation.value,
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        'ShopyZo',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 28,
+                                          fontFamily: 'Nunito',
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 2,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20),
+                                    ],
                                   ),
-                                  const SizedBox(height: 20),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                                );
+                              },
+                            ),
+                          ),
                         ],
                       ),
-                     
+
                       // CircularProgressIndicator(
                       //   color: primary,
                       //   backgroundColor: Colors.white,
                       //   strokeWidth: 1.0,
                       // ),
-                      
                     ],
                   ),
                 ),
